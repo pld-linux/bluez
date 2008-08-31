@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.2
-Release:	2
+Release:	3
 Epoch:		0
 License:	GPL v2+
 Group:		Applications/System
@@ -37,6 +37,7 @@ Obsoletes:	bluez-sdp
 Obsoletes:	bluez-utils
 Obsoletes:	bluez-utils-init
 Conflicts:	bluez-bluefw
+Provides:	bluez-utils = %{epoch}:%{version}-%{release}
 ExcludeArch:	s390 s390x
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
