@@ -220,9 +220,9 @@ install test/passkey-agent $RPM_BUILD_ROOT%{_bindir}
 mv $RPM_BUILD_ROOT/etc/udev/bluetooth.rules \
 	$RPM_BUILD_ROOT/etc/udev/rules.d/71-bluetooth.rules
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/gstreamer*/libgstbluetooth.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.{,l}a
+rm -f $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{,l}a
+rm -f $RPM_BUILD_ROOT%{_libdir}/gstreamer*/libgstbluetooth.{,l}a
 
 %clean
 rm -rf $RPM_BUILD_ROOT
