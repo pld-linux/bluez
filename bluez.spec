@@ -1,14 +1,14 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.2
-Release:	3
+Version:	4.5
+Release:	1
 Epoch:		0
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	60344bd096fda1742e4dbd603b1a06e9
+# Source0-md5:	97d4dfad90ed924952d013bd0b03bedd
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}-udev.rules
@@ -244,7 +244,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog README audio/audio-api.txt input/input-api.txt network/network-api.txt serial/serial-api.txt
+%doc AUTHORS ChangeLog README
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
 %dir %{_libdir}/bluetooth
@@ -285,7 +285,6 @@ fi
 %attr(755,root,root) %{_libdir}/libbluetooth.so
 %{_libdir}/libbluetooth.la
 %{_includedir}/bluetooth
-%{_aclocaldir}/bluez.m4
 %{_pkgconfigdir}/bluez.pc
 
 %files libs-static
