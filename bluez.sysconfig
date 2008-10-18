@@ -7,6 +7,7 @@ SERVICE_RUN_NICE_LEVEL="+0"
 # (alternatively you can pass uart configuration file path here)
 UART_CONF="no"
 
+DAEMON_ENABLE=yes
 #HID2HCI_ENABLE=yes
 HCID_ENABLE=yes
 SDPD_ENABLE=yes

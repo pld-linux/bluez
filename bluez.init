@@ -22,7 +22,12 @@ fi
 start() {
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/bluetooth ]; then
-		msg_starting bluetooth; started
+		if is_yes "${DAEMON_ENABLE}" && [ -x /usr/sbin/bluetoothd ]; then
+			msg_starting bluetooth
+			daemon /usr/sbin/bluetoothd
+			RETVAL=$?
+		fi
+
 		if is_yes "${HID2HCI_ENABLE}" && [ -x /usr/sbin/hid2hci ]; then
 			msg_starting hid2hci
 			daemon /usr/sbin/hid2hci -0 -q    #be quiet
@@ -101,6 +106,11 @@ stop() {
 		if is_yes "${HCID_ENABLE}" && [ -x /usr/sbin/hcid ]; then
 			msg_stopping hcid
 			killproc /usr/sbin/hcid
+		fi
+
+		if is_yes "${DAEMON_ENABLE}" && [ -x /usr/sbin/bluetoothd ]; then
+			msg_stopping bluetooth
+			killproc /usr/sbin/bluetoothd
 		fi
 
 		if [ "$UART_CONF" != "no" ]; then

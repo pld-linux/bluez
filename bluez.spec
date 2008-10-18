@@ -1,14 +1,14 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.13
+Version:	4.14
 Release:	1
 Epoch:		0
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	7ce8ed3a586782aa48251f9a547e287f
+# Source0-md5:	1f33ebac05d056879ceb4063e7b1def4
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}-udev.rules
@@ -176,11 +176,9 @@ aplikacji Bluetooth.
 	--enable-shared \
 	--enable-static \
 	--enable-alsa \
-	--enable-bccmd \
-	--enable-configfiles \
-	--enable-netlink \
 	--enable-audio \
 	--enable-bccmd \
+	--enable-configfiles \
 	--enable-cups \
 	--enable-dfutool \
 	--enable-dund \
@@ -189,12 +187,12 @@ aplikacji Bluetooth.
 	--enable-hidd \
 	--enable-input \
 	--enable-manpages \
+	--enable-netlink \
 	--enable-network \
 	--enable-pand \
 	--enable-pcmciarules \
 	--enable-serial \
 	--enable-tools \
-	--enable-test \
 	--enable-usb
 
 %{__make} \
