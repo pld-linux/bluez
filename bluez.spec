@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.16
-Release:	1
+Release:	2
 Epoch:		0
 License:	GPL v2+
 Group:		Applications/System
@@ -43,7 +43,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # currently lib, not %{_lib} (see cups.spec)
 %define		cupsdir		/usr/lib/cups/backend
-%define		udevdir		/%{_lib}/udev
+%define		udevdir		/lib/udev
 
 %description
 Bluetooth utilities:
