@@ -1,14 +1,13 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.33
+Version:	4.35
 Release:	1
-Epoch:		0
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	13cb8c25706dc8c874d1c82fa24b3aae
+# Source0-md5:	5919d6383cd9446f8b90fdca748dc961
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}-udev.rules
@@ -47,10 +46,11 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Bluetooth utilities:
+ - bluetoothd
+ - dund
  - hcitool
  - hciattach
  - hciconfig
- - hcid
  - hciemu
  - hidd
  - l2ping
@@ -62,10 +62,11 @@ The BLUETOOTH trademarks are owned by Bluetooth SIG, Inc., U.S.A.
 
 %description -l pl.UTF-8
 Narzędzia Bluetooth:
+ - bluetoothd
+ - dund
  - hcitool
  - hciattach
  - hciconfig
- - hcid
  - hciemu
  - hidd
  - l2ping
@@ -236,7 +237,7 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del bluetooth
 fi
 
-%post libs   -p /sbin/ldconfig
+%post   libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
 
 %files
