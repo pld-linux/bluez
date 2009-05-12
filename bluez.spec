@@ -211,7 +211,7 @@ install -d $RPM_BUILD_ROOT{/etc/udev/rules.d,%{udevdir}}
 	udevdir=%{udevdir}
 
 # noinst
-#install sync/bluetoothd-service-sync $RPM_BUILD_ROOT%{_libdir}/bluetooth
+install audio/audio.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/bluetooth
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
@@ -249,6 +249,7 @@ fi
 %dir %{_libdir}/bluetooth/plugins
 %attr(755,root,root) %{_libdir}/bluetooth/plugins/*.so
 %dir %{_sysconfdir}/bluetooth
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/audio.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/main.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/rfcomm.conf
 %attr(754,root,root) /etc/rc.d/init.d/bluetooth
