@@ -1,0 +1,19 @@
+--- bluez-4.40/scripts/Makefile.am~	2009-05-19 11:04:10.000000000 +0200
++++ bluez-4.40/scripts/Makefile.am	2009-05-24 18:35:37.159621106 +0200
+@@ -1,6 +1,6 @@
+ 
+ if CONFIGFILES
+-rulesdir = $(sysconfdir)/udev
++rulesdir = $(sysconfdir)/udev/rules.d
+ 
+ rules_DATA =
+ 
+@@ -14,7 +14,7 @@
+ endif
+ 
+ if PCMCIARULES
+-udevdir = $(libexecdir)/udev
++udevdir = $(libexecdir)/udev/rules.d
+ 
+ udev_SCRIPTS = bluetooth_serial
+ endif
