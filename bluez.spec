@@ -1,18 +1,19 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.39
+Version:	4.40
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	ba06291b737077332e914d6d653501c6
+# Source0-md5:	a25fa37c97c309338649f6a5fd4cea76
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}-udev.rules
 Source4:	%{name}-udev.script
 Patch0:		%{name}-etc_dir.patch
+Patch1:		%{name}-udev-path.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.50
@@ -166,6 +167,7 @@ aplikacji Bluetooth.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -217,9 +219,6 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/bluetooth
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/udev/rules.d/70-bluetooth.rules
 install %{SOURCE4} $RPM_BUILD_ROOT%{udevdir}/bluetooth.sh
-mv $RPM_BUILD_ROOT/etc/udev/bluetooth.rules \
-	$RPM_BUILD_ROOT/etc/udev/rules.d/71-bluetooth.rules
-
 rm -f $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.{,l}a
 rm -f $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{,l}a
 rm -f $RPM_BUILD_ROOT%{_libdir}/gstreamer*/libgstbluetooth.{,l}a
@@ -258,11 +257,13 @@ fi
 %attr(755,root,root) %{udevdir}/bluetooth.sh
 %attr(755,root,root) %{udevdir}/bluetooth_serial
 %config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/70-bluetooth.rules
-%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/71-bluetooth.rules
+%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/bluetooth-hid2hci.rules
+%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/bluetooth-serial.rules
 %{_mandir}/man[18]/*
 
 %files -n alsa-plugins-bluetooth
 %defattr(644,root,root,755)
+%{_sysconfdir}/alsa/bluetooth.conf
 %attr(755,root,root) %{_libdir}/alsa-lib/libasound_module_ctl_bluetooth.so
 %attr(755,root,root) %{_libdir}/alsa-lib/libasound_module_pcm_bluetooth.so
 
