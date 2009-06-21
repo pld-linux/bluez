@@ -268,6 +268,7 @@ fi
 
 %files -n alsa-plugins-bluetooth
 %defattr(644,root,root,755)
+%dir %{_sysconfdir}/alsa
 %{_sysconfdir}/alsa/bluetooth.conf
 %attr(755,root,root) %{_libdir}/alsa-lib/libasound_module_ctl_bluetooth.so
 %attr(755,root,root) %{_libdir}/alsa-lib/libasound_module_pcm_bluetooth.so
