@@ -1,21 +1,19 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.41
-Release:	2
+Version:	4.42
+Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	4629236517df280be321f009917a52be
+# Source0-md5:	d24dfd3ca42847123e29f58b29af6948
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}-udev.rules
 Source4:	%{name}-udev.script
 Patch0:		%{name}-etc_dir.patch
 Patch1:		%{name}-udev-path.patch
-Patch2:		%{name}-null-session.patch
-Patch3:		%{name}-bt_cancel_discovery.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.50
@@ -171,8 +169,6 @@ aplikacji Bluetooth.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 %{__libtoolize}
