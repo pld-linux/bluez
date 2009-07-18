@@ -27,7 +27,6 @@ BuildRequires:	libnl-devel
 BuildRequires:	libsndfile-devel
 BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
-BuildRequires:	openobex-devel >= 1.1
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
