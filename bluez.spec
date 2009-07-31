@@ -1,19 +1,19 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.42
+Version:	4.45
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	d24dfd3ca42847123e29f58b29af6948
+# Source0-md5:	fb1a02a8008326eabe383dc6fb01b05d
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}-udev.rules
 Source4:	%{name}-udev.script
 Patch0:		%{name}-etc_dir.patch
-Patch1:		%{name}-udev-path.patch
+Patch2:		%{name}-wacom-mode-2.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.50
@@ -28,6 +28,7 @@ BuildRequires:	libsndfile-devel
 BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
+BuildRequires:	udev-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	rc-scripts
@@ -167,7 +168,7 @@ aplikacji Bluetooth.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -193,10 +194,11 @@ aplikacji Bluetooth.
 	--enable-netlink \
 	--enable-network \
 	--enable-pand \
-	--enable-pcmciarules \
+	--enable-pcmcia \
 	--enable-serial \
 	--enable-tools \
-	--enable-usb
+	--enable-usb \
+	--enable-udevrules 
 
 %{__make} \
 	cupsdir=%{cupsdir} \
@@ -219,7 +221,7 @@ install network/network.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/bluetooth
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/udev/rules.d/70-bluetooth.rules
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/udev/rules.d/bluetooth.rules
 install %{SOURCE4} $RPM_BUILD_ROOT%{udevdir}/bluetooth.sh
 rm -f $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.{,l}a
 rm -f $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{,l}a
@@ -260,9 +262,10 @@ fi
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth.conf
 %attr(755,root,root) %{udevdir}/bluetooth.sh
 %attr(755,root,root) %{udevdir}/bluetooth_serial
-%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/70-bluetooth.rules
-%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/bluetooth-hid2hci.rules
-%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/bluetooth-serial.rules
+%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/bluetooth.rules
+%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/97-bluetooth.rules
+%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/97-bluetooth-hid2hci.rules
+%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/97-bluetooth-serial.rules
 %{_mandir}/man[18]/*
 
 %files -n alsa-plugins-bluetooth
