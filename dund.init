@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# dund	Bluetooth Dial-Up-Networking Daemon
+#
+# chkconfig:	345 26 89
+#
+# description:	Bluetooth Dial-Up-Networking Daemon. Provides PPP over RFCOMM services.
+#
+# $Id$
+
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+[ -f /etc/sysconfig/bluetooth ] && . /etc/sysconfig/bluetooth
+
+is_no "${NETWORKING}" && exit 0
+
+start() {
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/dund ]; then
+		msg_starting dund
+		daemon /usr/bin/dund ${DUND_OPTIONS}
+		RETVAL=$?
+		touch /var/lock/subsys/dund
+	else
+		msg_already_running dund
+	fi
+}
+
+stop() {
+	if [ -f /var/lock/subsys/dund ]; then
+		msg_stopping dund
+		killproc /usr/bin/dund
+		rm -f /var/lock/subsys/dund
+	else
+		msg_not_running dund
+	fi
+}
+
+condrestart() {
+	if [ -f /var/lock/subsys/dund ]; then
+		stop
+		start
+	else
+		msg_not_running dund
+		RETVAL=$1
+	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload|force-reload)
+	stop
+	start
+	;;
+  try-restart)
+	condrestart 0
+	;;
+  status)
+	if [ -f /var/lock/subsys/dund ]; then
+		exit 0
+	else
+		exit 1
+	fi
+	;;
+  *)
+	msg_usage "$0 {start|stop|restart|try-restart|reload|force-reload|status}"
+	exit 3
+esac
+
+exit $RETVAL

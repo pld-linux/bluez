@@ -1,17 +1,18 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.45
-Release:	1
+Version:	4.47
+Release:	2
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	fb1a02a8008326eabe383dc6fb01b05d
+# Source0-md5:	b54a199004b578ec5652014a5e62aeaa
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
-Source3:	%{name}-udev.rules
-Source4:	%{name}-udev.script
+Source3:	dund.init
+Source4:	pand.init
+Source5:	rfcomm.init
 Patch0:		%{name}-etc_dir.patch
 Patch2:		%{name}-wacom-mode-2.patch
 URL:		http://www.bluez.org/
@@ -207,22 +208,17 @@ aplikacji Bluetooth.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
-install -d $RPM_BUILD_ROOT{/etc/udev/rules.d,%{udevdir}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	cupsdir=%{cupsdir} \
 	udevdir=%{udevdir}
 
-# noinst
-install audio/audio.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
-install input/input.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
-install network/network.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
-
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/bluetooth
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/udev/rules.d/bluetooth.rules
-install %{SOURCE4} $RPM_BUILD_ROOT%{udevdir}/bluetooth.sh
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/dund
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/pand
+install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/rfcomm
 rm -f $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.{,l}a
 rm -f $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{,l}a
 rm -f $RPM_BUILD_ROOT%{_libdir}/gstreamer*/libgstbluetooth.{,l}a
@@ -232,12 +228,24 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add bluetooth
+/sbin/chkconfig --add dund
+/sbin/chkconfig --add pand
+/sbin/chkconfig --add rfcomm
 %service bluetooth restart
+%service dund restart
+%service pand restart
+%service rfcomm restart
 
 %preun
 if [ "$1" = "0" ]; then
 	%service bluetooth stop
+	%service dund stop
+	%service pand stop
+	%service rfcomm stop
 	/sbin/chkconfig --del bluetooth
+	/sbin/chkconfig --del dund
+	/sbin/chkconfig --del pand
+	/sbin/chkconfig --del rfcomm
 fi
 
 %post   libs -p /sbin/ldconfig
@@ -252,20 +260,18 @@ fi
 %dir %{_libdir}/bluetooth/plugins
 %attr(755,root,root) %{_libdir}/bluetooth/plugins/*.so
 %dir %{_sysconfdir}/bluetooth
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/audio.conf
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/input.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/main.conf
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/network.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/rfcomm.conf
 %attr(754,root,root) /etc/rc.d/init.d/bluetooth
+%attr(754,root,root) /etc/rc.d/init.d/dund
+%attr(754,root,root) /etc/rc.d/init.d/pand
+%attr(754,root,root) /etc/rc.d/init.d/rfcomm
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/bluetooth
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth.conf
-%attr(755,root,root) %{udevdir}/bluetooth.sh
 %attr(755,root,root) %{udevdir}/bluetooth_serial
-%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/bluetooth.rules
-%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/97-bluetooth.rules
-%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/97-bluetooth-hid2hci.rules
-%config(noreplace) %verify(not md5 mtime size) /etc/udev/rules.d/97-bluetooth-serial.rules
+%config(noreplace) %verify(not md5 mtime size) %{udevdir}/rules.d/97-bluetooth.rules
+%config(noreplace) %verify(not md5 mtime size) %{udevdir}/rules.d/97-bluetooth-hid2hci.rules
+%config(noreplace) %verify(not md5 mtime size) %{udevdir}/rules.d/97-bluetooth-serial.rules
 %{_mandir}/man[18]/*
 
 %files -n alsa-plugins-bluetooth

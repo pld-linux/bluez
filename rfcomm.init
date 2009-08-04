@@ -1,0 +1,82 @@
+#!/bin/sh
+#
+# rfcomm	Bluetooth RFCOMM setup. Sets up serial devices over Bluetooth.
+#
+# chkconfig:	345 27 88
+#
+# description:	Bluetooth RFCOMM setup
+#
+# $Id$
+
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+UART_CONF="/etc/bluetooth/uart"
+[ -f /etc/sysconfig/bluetooth ] && . /etc/sysconfig/bluetooth
+
+if [ "$UART_CONF" != "no" -a ! -f "$UART_CONF" ]; then
+	UART_CONF="no"
+fi
+
+start() {
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/rfcomm ]; then
+		msg_starting rfcomm
+		daemon /usr/bin/rfcomm -f /etc/bluetooth/rfcomm.conf bind all
+		RETVAL=$?
+		touch /var/lock/subsys/rfcomm
+	else
+		msg_already_running rfcomm
+	fi
+}
+
+stop() {
+	if [ -f /var/lock/subsys/rfcomm ]; then
+		msg_stopping rfcomm
+		daemon /usr/bin/rfcomm release all
+		rm -f /var/lock/subsys/rfcomm
+	else
+		msg_not_running bluetooth
+	fi
+}
+
+condrestart() {
+	if [ -f /var/lock/subsys/rfcomm ]; then
+		stop
+		start
+	else
+		msg_not_running rfcomm
+		RETVAL=$1
+	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload|force-reload)
+	stop
+	start
+	;;
+  try-restart)
+	condrestart 0
+	;;
+  status)
+	if [ -f /var/lock/subsys/rfcomm ]; then
+		exit 0
+	else
+		exit 1
+	fi
+	;;
+  *)
+	msg_usage "$0 {start|stop|restart|try-restart|reload|force-reload|status}"
+	exit 3
+esac
+
+exit $RETVAL
