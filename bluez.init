@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# bluetooth	Bluetooth subsystem starting and stopping
+# bluetooth	Bluetooth subsystem starting and stopping. Turn HID adapters into Bluetooth ones.
 #
 # chkconfig:	345 50 83
 #
@@ -17,11 +17,12 @@
 start() {
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/bluetooth ]; then
-		msg_starting hid2hci
-		daemon /usr/sbin/hid2hci -q -r hci
-		RETVAL=$?
-		/bin/sleep 1 # delay for hid's to be detected by hotplug
-		touch /var/lock/subsys/bluetooth
+		if [ -x /sbin/udevadm ]; then
+			msg_starting "Bluetooth devices"
+			daemon /sbin/udevadm trigger --subsystem-match=bluetooth
+			RETVAL=$?
+			touch /var/lock/subsys/bluetooth
+		fi
 	else
 		msg_already_running bluetooth
 	fi
@@ -29,8 +30,7 @@ start() {
 
 stop() {
 	if [ -f /var/lock/subsys/bluetooth ]; then
-		msg_stopping hid2hci
-		daemon /usr/sbin/hid2hci -q -r hid
+		# nothing needed to stop it
 		rm -f /var/lock/subsys/bluetooth
 	else
 		msg_not_running bluetooth
