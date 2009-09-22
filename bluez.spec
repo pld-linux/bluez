@@ -206,7 +206,7 @@ aplikacji Bluetooth.
 	--enable-usb \
 	--enable-udevrules
 
-%{__make} \
+%{__make} -j1 \
 	cupsdir=%{cupsdir} \
 	udevdir=%{udevdir}
 
