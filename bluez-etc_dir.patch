@@ -1,6 +1,6 @@
-diff -Nru bluez-utils-2.2/rfcomm/parser.y bluez-utils-2.2.new/rfcomm/parser.y
---- bluez-utils-2.2/rfcomm/parser.y	Thu Oct 31 10:09:48 2002
-+++ bluez-utils-2.2.new/rfcomm/parser.y	Sun Mar 23 18:18:14 2003
+diff -Nru bluez-4.53/tools/parser.y.orig bluez-4.53/tools/parser.y
+--- bluez-4.53/tools/parser.y.orig	Thu Oct 31 10:09:48 2002
++++ bluez-4.53/tools/parser.y	Sun Mar 23 18:18:14 2003
 @@ -147,7 +147,11 @@
  	if (filename) {
  		snprintf(file, MAXPATHLEN,  "%s", filename);
