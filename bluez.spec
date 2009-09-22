@@ -17,6 +17,7 @@ Patch0:		%{name}-etc_dir.patch
 Patch1:		%{name}-oui.patch
 Patch2:		%{name}-wacom-mode-2.patch
 Patch3:		%{name}-try-utf8-harder.patch
+Patch4:		%{name}-parallel-make.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.50
@@ -175,6 +176,7 @@ aplikacji Bluetooth.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 %{__libtoolize}
@@ -206,7 +208,7 @@ aplikacji Bluetooth.
 	--enable-usb \
 	--enable-udevrules
 
-%{__make} -j1 \
+%{__make} \
 	cupsdir=%{cupsdir} \
 	udevdir=%{udevdir}
 
