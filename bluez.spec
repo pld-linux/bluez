@@ -1,13 +1,13 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.47
-Release:	3
+Version:	4.53
+Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	b54a199004b578ec5652014a5e62aeaa
+# Source0-md5:	432509193ea508da5ce23fe056625d0f
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
@@ -31,18 +31,18 @@ BuildRequires:	libsndfile-devel
 BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
-BuildRequires:	udev-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	udev-devel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	rc-scripts
 Requires:	hwdata >= 0.225
+Requires:	rc-scripts
+Provides:	bluez-utils = %{epoch}:%{version}-%{release}
 Obsoletes:	bluez-hciemu
 Obsoletes:	bluez-pan
 Obsoletes:	bluez-sdp
 Obsoletes:	bluez-utils
 Obsoletes:	bluez-utils-init
 Conflicts:	bluez-bluefw
-Provides:	bluez-utils = %{epoch}:%{version}-%{release}
 ExcludeArch:	s390 s390x
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -204,7 +204,7 @@ aplikacji Bluetooth.
 	--enable-serial \
 	--enable-tools \
 	--enable-usb \
-	--enable-udevrules 
+	--enable-udevrules
 
 %{__make} \
 	cupsdir=%{cupsdir} \
