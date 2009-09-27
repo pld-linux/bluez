@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.53
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -226,6 +226,12 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/dund
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/pand
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/rfcomm
+
+install audio/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
+install input/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
+install network/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
+install serial/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
+
 rm -f $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.{,l}a
 rm -f $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{,l}a
 rm -f $RPM_BUILD_ROOT%{_libdir}/gstreamer*/libgstbluetooth.{,l}a
@@ -267,8 +273,7 @@ fi
 %dir %{_libdir}/bluetooth/plugins
 %attr(755,root,root) %{_libdir}/bluetooth/plugins/*.so
 %dir %{_sysconfdir}/bluetooth
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/main.conf
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/rfcomm.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/*.conf
 %attr(754,root,root) /etc/rc.d/init.d/bluetooth
 %attr(754,root,root) /etc/rc.d/init.d/dund
 %attr(754,root,root) /etc/rc.d/init.d/pand
