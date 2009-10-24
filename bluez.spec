@@ -1,13 +1,16 @@
+# Conditional build:
+%bcond_with	verbose		# verbose build (V=1)
+#
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.55
+Version:	4.56
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	febbbbb512eb5ed9c28aa8008ae952a7
+# Source0-md5:	92ea2e86a5489f0d16567920f2ec9b36
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
@@ -26,6 +29,7 @@ BuildRequires:	dbus-glib-devel >= 0.60
 BuildRequires:	glib2-devel >= 2.0
 BuildRequires:	gstreamer-devel >= 0.10
 BuildRequires:	gstreamer-plugins-base-devel >= 0.10
+BuildRequires:	libcap-ng-devel
 BuildRequires:	libnl-devel
 BuildRequires:	libsndfile-devel
 BuildRequires:	libtool
@@ -196,7 +200,6 @@ aplikacji Bluetooth.
 	--enable-hid2hci \
 	--enable-hidd \
 	--enable-input \
-	--enable-manpages \
 	--enable-netlink \
 	--enable-network \
 	--enable-pand \
@@ -208,7 +211,9 @@ aplikacji Bluetooth.
 
 %{__make} \
 	cupsdir=%{cupsdir} \
-	udevdir=%{udevdir}
+	rulesdir=%{udevdir}/rules.d \
+	udevdir=%{udevdir} \
+	%{?with_verbose:V=1}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -217,7 +222,9 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	cupsdir=%{cupsdir} \
-	udevdir=%{udevdir}
+	rulesdir=%{udevdir}/rules.d \
+	udevdir=%{udevdir} \
+	%{?with_verbose:V=1}
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/bluetooth
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
