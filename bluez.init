@@ -19,7 +19,7 @@ start() {
 	if [ ! -f /var/lock/subsys/bluetooth ]; then
 		if [ -x /sbin/udevadm ]; then
 			msg_starting "Bluetooth devices"
-			daemon /sbin/udevadm trigger --subsystem-match=bluetooth
+			daemon /sbin/udevadm trigger --subsystem-match=bluetooth --action=add
 			RETVAL=$?
 			touch /var/lock/subsys/bluetooth
 		fi
