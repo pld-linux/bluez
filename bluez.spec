@@ -5,7 +5,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.63
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
