@@ -1,6 +1,3 @@
-# Conditional build:
-%bcond_with	verbose		# verbose build (V=1)
-#
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
@@ -22,11 +19,11 @@ Patch2:		%{name}-wacom-mode-2.patch
 Patch3:		%{name}-try-utf8-harder.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0.10-1
-BuildRequires:	autoconf >= 2.50
+BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	bison
-BuildRequires:	dbus-glib-devel >= 0.60
-BuildRequires:	glib2-devel >= 2.0
+BuildRequires:	dbus-devel >= 1.0
+BuildRequires:	glib2-devel >= 1:2.14
 BuildRequires:	gstreamer-devel >= 0.10
 BuildRequires:	gstreamer-plugins-base-devel >= 0.10
 BuildRequires:	libcap-ng-devel
@@ -38,6 +35,7 @@ BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	udev-devel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	glib2 >= 1:2.14
 Requires:	hwdata >= 0.225
 Requires:	rc-scripts
 Provides:	bluez-utils = %{epoch}:%{version}-%{release}
@@ -187,11 +185,13 @@ aplikacji Bluetooth.
 %{__autoheader}
 %{__automake}
 %configure \
+	--disable-silent-rules \
 	--enable-shared \
 	--enable-static \
 	--enable-alsa \
 	--enable-audio \
 	--enable-bccmd \
+	--enable-capng \
 	--enable-configfiles \
 	--enable-cups \
 	--enable-dfutool \
@@ -212,8 +212,7 @@ aplikacji Bluetooth.
 %{__make} \
 	cupsdir=%{cupsdir} \
 	rulesdir=%{udevdir}/rules.d \
-	udevdir=%{udevdir} \
-	%{?with_verbose:V=1}
+	udevdir=%{udevdir}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -223,8 +222,7 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 	DESTDIR=$RPM_BUILD_ROOT \
 	cupsdir=%{cupsdir} \
 	rulesdir=%{udevdir}/rules.d \
-	udevdir=%{udevdir} \
-	%{?with_verbose:V=1}
+	udevdir=%{udevdir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/bluetooth
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
