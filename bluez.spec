@@ -1,22 +1,21 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.69
+Version:	4.75
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	986a08fb5c94ebd7d1a4d702e45ee34e
+# Source0-md5:	ee95086aef5955b25f1226b9e45bd6be
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
 Source4:	pand.init
 Source5:	rfcomm.init
 Patch0:		%{name}-etc_dir.patch
-Patch1:		%{name}-oui.patch
-Patch2:		%{name}-wacom-mode-2.patch
-Patch3:		%{name}-try-utf8-harder.patch
+Patch1:		%{name}-wacom-mode-2.patch
+Patch2:		%{name}-try-utf8-harder.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.60
@@ -176,7 +175,6 @@ aplikacji Bluetooth.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 %{__libtoolize}
@@ -185,6 +183,7 @@ aplikacji Bluetooth.
 %{__autoheader}
 %{__automake}
 %configure \
+	--with-ouifile=%{_datadir}/hwdata/oui.txt \
 	--disable-silent-rules \
 	--enable-shared \
 	--enable-static \
@@ -234,6 +233,8 @@ install audio/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 install input/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 install network/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 install serial/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
+
+mv -fT $RPM_BUILD_ROOT{%{_datadir},%{_sysconfdir}}/alsa
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.{,l}a
 rm -f $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{,l}a
