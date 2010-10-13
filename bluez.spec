@@ -236,9 +236,9 @@ install serial/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 
 mv -fT $RPM_BUILD_ROOT{%{_datadir},%{_sysconfdir}}/alsa
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.{,l}a
-rm -f $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{,l}a
-rm -f $RPM_BUILD_ROOT%{_libdir}/gstreamer*/libgstbluetooth.{,l}a
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.{la,a}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{la,a}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/gstreamer*/libgstbluetooth.{la,a}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -271,8 +271,20 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
-%attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) %{_sbindir}/*
+%attr(755,root,root) %{_bindir}/ciptool
+%attr(755,root,root) %{_bindir}/dfutool
+%attr(755,root,root) %{_bindir}/dund
+%attr(755,root,root) %{_bindir}/hcitool
+%attr(755,root,root) %{_bindir}/hidd
+%attr(755,root,root) %{_bindir}/l2ping
+%attr(755,root,root) %{_bindir}/pand
+%attr(755,root,root) %{_bindir}/rfcomm
+%attr(755,root,root) %{_bindir}/sdptool
+%attr(755,root,root) %{_sbindir}/bccmd
+%attr(755,root,root) %{_sbindir}/bluetoothd
+%attr(755,root,root) %{_sbindir}/hciattach
+%attr(755,root,root) %{_sbindir}/hciconfig
+%attr(755,root,root) %{_sbindir}/hid2hci
 %dir %{_libdir}/bluetooth
 %dir %{_libdir}/bluetooth/plugins
 %attr(755,root,root) %{_libdir}/bluetooth/plugins/*.so
@@ -288,7 +300,20 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{udevdir}/rules.d/97-bluetooth.rules
 %config(noreplace) %verify(not md5 mtime size) %{udevdir}/rules.d/97-bluetooth-hid2hci.rules
 %config(noreplace) %verify(not md5 mtime size) %{udevdir}/rules.d/97-bluetooth-serial.rules
-%{_mandir}/man[18]/*
+%{_mandir}/man1/ciptool.1*
+%{_mandir}/man1/dfutool.1*
+%{_mandir}/man1/dund.1*
+%{_mandir}/man1/hcitool.1*
+%{_mandir}/man1/hidd.1*
+%{_mandir}/man1/pand.1*
+%{_mandir}/man1/rfcomm.1*
+%{_mandir}/man1/sdptool.1*
+%{_mandir}/man8/bccmd.8*
+%{_mandir}/man8/bluetoothd.8*
+%{_mandir}/man8/hciattach.8*
+%{_mandir}/man8/hciconfig.8*
+%{_mandir}/man8/hid2hci.8*
+%{_mandir}/man8/l2ping.8*
 
 %files -n alsa-plugins-bluetooth
 %defattr(644,root,root,755)
@@ -308,7 +333,7 @@ fi
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libbluetooth.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libbluetooth.so.[0-9]
+%attr(755,root,root) %ghost %{_libdir}/libbluetooth.so.3
 
 %files libs-devel
 %defattr(644,root,root,755)
