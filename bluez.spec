@@ -1,13 +1,13 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.75
+Version:	4.76
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	ee95086aef5955b25f1226b9e45bd6be
+# Source0-md5:	76b4814bf7ce498de846173aca737e7d
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
@@ -237,7 +237,7 @@ install serial/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 mv -fT $RPM_BUILD_ROOT{%{_datadir},%{_sysconfdir}}/alsa
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.{la,a}
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{la,a}
+#%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{la,a}
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/gstreamer*/libgstbluetooth.{la,a}
 
 %clean
@@ -287,7 +287,7 @@ fi
 %attr(755,root,root) %{_sbindir}/hid2hci
 %dir %{_libdir}/bluetooth
 %dir %{_libdir}/bluetooth/plugins
-%attr(755,root,root) %{_libdir}/bluetooth/plugins/*.so
+#%attr(755,root,root) %{_libdir}/bluetooth/plugins/*.so
 %dir %{_sysconfdir}/bluetooth
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/*.conf
 %attr(754,root,root) /etc/rc.d/init.d/bluetooth
