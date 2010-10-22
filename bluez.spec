@@ -26,7 +26,6 @@ BuildRequires:	glib2-devel >= 1:2.14
 BuildRequires:	gstreamer-devel >= 0.10
 BuildRequires:	gstreamer-plugins-base-devel >= 0.10
 BuildRequires:	libcap-ng-devel
-BuildRequires:	libnl-devel
 BuildRequires:	libsndfile-devel
 BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
@@ -199,7 +198,6 @@ aplikacji Bluetooth.
 	--enable-hid2hci \
 	--enable-hidd \
 	--enable-input \
-	--enable-netlink \
 	--enable-network \
 	--enable-pand \
 	--enable-pcmcia \
@@ -287,7 +285,6 @@ fi
 %attr(755,root,root) %{_sbindir}/hid2hci
 %dir %{_libdir}/bluetooth
 %dir %{_libdir}/bluetooth/plugins
-#%attr(755,root,root) %{_libdir}/bluetooth/plugins/*.so
 %dir %{_sysconfdir}/bluetooth
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/*.conf
 %attr(754,root,root) /etc/rc.d/init.d/bluetooth
