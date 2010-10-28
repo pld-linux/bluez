@@ -21,9 +21,9 @@ is_no "${NETWORKING}" && exit 0
 start() {
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/pand ]; then
-			msg_starting pand
-			daemon /usr/bin/pand ${PAND_OPTIONS}
-			RETVAL=$?
+		msg_starting pand
+		daemon /usr/bin/pand ${PAND_OPTIONS}
+		RETVAL=$?
 		touch /var/lock/subsys/pand
 	else
 		msg_already_running pand
@@ -32,8 +32,8 @@ start() {
 
 stop() {
 	if [ -f /var/lock/subsys/pand ]; then
-			msg_stopping pand
-			killproc /usr/bin/pand
+		msg_stopping pand
+		killproc /usr/bin/pand
 		rm -f /var/lock/subsys/pand
 	else
 		msg_not_running pand
@@ -69,9 +69,11 @@ case "$1" in
   status)
 	status pand
 	if [ -f /var/lock/subsys/pand ]; then
+		nls "pand is running"
 		exit 0
 	else
-		exit 1
+		msg_not_running pand
+		exit 3
 	fi
 	;;
   *)

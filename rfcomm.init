@@ -37,7 +37,7 @@ stop() {
 		daemon /usr/bin/rfcomm release all
 		rm -f /var/lock/subsys/rfcomm
 	else
-		msg_not_running bluetooth
+		msg_not_running rfcomm
 	fi
 }
 
@@ -69,9 +69,11 @@ case "$1" in
 	;;
   status)
 	if [ -f /var/lock/subsys/rfcomm ]; then
+		nls "rfcomm is running"
 		exit 0
 	else
-		exit 1
+		msg_not_running rfcomm
+		exit 3
 	fi
 	;;
   *)

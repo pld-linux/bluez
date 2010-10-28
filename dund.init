@@ -66,9 +66,11 @@ case "$1" in
 	;;
   status)
 	if [ -f /var/lock/subsys/dund ]; then
+		nls "dund is running"
 		exit 0
 	else
-		exit 1
+		msg_not_running dund
+		exit 3
 	fi
 	;;
   *)
