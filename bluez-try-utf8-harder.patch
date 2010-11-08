@@ -1,9 +1,7 @@
-diff --git a/src/security.c b/src/security.c
-index 905cf61..67fd266 100644
---- a/src/security.c
-+++ b/src/security.c
-@@ -705,8 +705,16 @@ static inline void remote_name_information(int dev, bdaddr_t *sba, void *ptr)
- 		memcpy(name, evt->name, MAX_NAME_LENGTH);
+--- bluez-4.78/src/event.c.orig	2010-11-08 11:58:02.359781937 +0200
++++ bluez-4.78/src/event.c	2010-11-08 11:58:34.456448604 +0200
+@@ -489,8 +489,16 @@
+ 
  		/* It's ok to cast end between const and non-const since
  		 * we know it points to inside of name which is non-const */
 -		if (!g_utf8_validate(name, -1, (const char **) &end))
@@ -18,6 +16,6 @@ index 905cf61..67fd266 100644
 +			} else
 +				*end = '\0';
 +		}
- 		write_device_name(sba, &dba, name);
- 	}
  
+ 		write_device_name(local, peer, name);
+ 	}
