@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.89
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -294,9 +294,9 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/bluetooth
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth.conf
 %attr(755,root,root) %{udevdir}/bluetooth_serial
-%config(noreplace) %verify(not md5 mtime size) %{udevdir}/rules.d/97-bluetooth.rules
-%config(noreplace) %verify(not md5 mtime size) %{udevdir}/rules.d/97-bluetooth-hid2hci.rules
-%config(noreplace) %verify(not md5 mtime size) %{udevdir}/rules.d/97-bluetooth-serial.rules
+%{udevdir}/rules.d/97-bluetooth.rules
+%{udevdir}/rules.d/97-bluetooth-hid2hci.rules
+%{udevdir}/rules.d/97-bluetooth-serial.rules
 %{_mandir}/man1/ciptool.1*
 %{_mandir}/man1/dfutool.1*
 %{_mandir}/man1/dund.1*
