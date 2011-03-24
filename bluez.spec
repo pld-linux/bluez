@@ -235,7 +235,6 @@ install serial/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 mv -fT $RPM_BUILD_ROOT{%{_datadir},%{_sysconfdir}}/alsa
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.{la,a}
-#%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{la,a}
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/gstreamer*/libgstbluetooth.{la,a}
 
 %clean
