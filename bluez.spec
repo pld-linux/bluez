@@ -22,8 +22,8 @@ BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	dbus-devel >= 1.0
-BuildRequires:	glib2-devel >= 1:2.14
-BuildRequires:	gstreamer-devel >= 0.10
+BuildRequires:	glib2-devel >= 1:2.16
+BuildRequires:	gstreamer-devel >= 0.10.30
 BuildRequires:	gstreamer-plugins-base-devel >= 0.10
 BuildRequires:	libcap-ng-devel
 BuildRequires:	libsndfile-devel
@@ -33,7 +33,7 @@ BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	udev-devel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	glib2 >= 1:2.14
+Requires:	glib2 >= 1:2.16
 Requires:	hwdata >= 0.225
 Requires:	rc-scripts
 Provides:	bluez-utils = %{epoch}:%{version}-%{release}
@@ -114,7 +114,7 @@ Summary:	Bluetooth support for gstreamer
 Summary(pl.UTF-8):	Obsługa Bluetooth dla gstreamera
 Group:		Libraries
 Requires:	bluez-libs >= %{epoch}:%{version}-%{release}
-Requires:	gstreamer >= 0.10
+Requires:	gstreamer >= 0.10.30
 Requires:	gstreamer-plugins-base >= 0.10
 
 %description -n gstreamer-bluetooth
@@ -187,20 +187,24 @@ aplikacji Bluetooth.
 	--enable-shared \
 	--enable-static \
 	--enable-alsa \
+	--enable-attrib \
 	--enable-audio \
 	--enable-bccmd \
 	--enable-capng \
 	--enable-configfiles \
 	--enable-cups \
+	--enable-dbusoob \
 	--enable-dfutool \
 	--enable-dund \
 	--enable-gstreamer \
+	--enable-health \
 	--enable-hid2hci \
 	--enable-hidd \
 	--enable-input \
 	--enable-network \
 	--enable-pand \
 	--enable-pcmcia \
+	--enable-pnat \
 	--enable-serial \
 	--enable-tools \
 	--enable-usb \
@@ -271,6 +275,7 @@ fi
 %attr(755,root,root) %{_bindir}/ciptool
 %attr(755,root,root) %{_bindir}/dfutool
 %attr(755,root,root) %{_bindir}/dund
+%attr(755,root,root) %{_bindir}/gatttool
 %attr(755,root,root) %{_bindir}/hcitool
 %attr(755,root,root) %{_bindir}/hidd
 %attr(755,root,root) %{_bindir}/l2ping
