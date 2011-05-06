@@ -1,13 +1,13 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.91
+Version:	4.93
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	3059b7ef5168c84cd0c6a67034ce79f9
+# Source0-md5:	c0f6450a39809996306005f5b85c6d3d
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
@@ -188,7 +188,6 @@ aplikacji Bluetooth.
 	--enable-shared \
 	--enable-static \
 	--enable-alsa \
-	--enable-attrib \
 	--enable-audio \
 	--enable-bccmd \
 	--enable-capng \
@@ -287,7 +286,6 @@ fi
 %attr(755,root,root) %{_sbindir}/bluetoothd
 %attr(755,root,root) %{_sbindir}/hciattach
 %attr(755,root,root) %{_sbindir}/hciconfig
-%attr(755,root,root) %{_sbindir}/hid2hci
 %dir %{_libdir}/bluetooth
 %dir %{_libdir}/bluetooth/plugins
 %dir %{_sysconfdir}/bluetooth
@@ -299,6 +297,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/bluetooth
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth.conf
 %attr(755,root,root) %{udevdir}/bluetooth_serial
+%attr(755,root,root) %{udevdir}/hid2hci
 %{udevdir}/rules.d/97-bluetooth.rules
 %{udevdir}/rules.d/97-bluetooth-hid2hci.rules
 %{udevdir}/rules.d/97-bluetooth-serial.rules
