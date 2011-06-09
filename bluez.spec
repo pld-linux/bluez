@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.94
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -236,8 +236,7 @@ install serial/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 
 mv -fT $RPM_BUILD_ROOT{%{_datadir},%{_sysconfdir}}/alsa
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/alsa-lib/*.{la,a}
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/gstreamer*/libgstbluetooth.{la,a}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/{alsa-lib/*.{la,a},gstreamer*/libgstbluetooth.{la,a},libbluetooth.la}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -316,7 +315,6 @@ fi
 
 %files -n alsa-plugins-bluetooth
 %defattr(644,root,root,755)
-%dir %{_sysconfdir}/alsa
 %{_sysconfdir}/alsa/bluetooth.conf
 %attr(755,root,root) %{_libdir}/alsa-lib/libasound_module_ctl_bluetooth.so
 %attr(755,root,root) %{_libdir}/alsa-lib/libasound_module_pcm_bluetooth.so
@@ -337,7 +335,6 @@ fi
 %files libs-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libbluetooth.so
-%{_libdir}/libbluetooth.la
 %{_includedir}/bluetooth
 %{_pkgconfigdir}/bluez.pc
 
