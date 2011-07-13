@@ -1,13 +1,13 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.94
-Release:	2
+Version:	4.95
+Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	59040081375411e3000dea9e5d53e5b7
+# Source0-md5:	341294b2849a04a4afff5c96bfbf30b2
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
