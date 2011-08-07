@@ -1,13 +1,13 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.95
+Version:	4.96
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
-Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.gz
-# Source0-md5:	341294b2849a04a4afff5c96bfbf30b2
+Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.bz2
+# Source0-md5:	255c3dda8b93210ab0dcf8d04ddaf69f
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
@@ -206,7 +206,8 @@ aplikacji Bluetooth.
 	--enable-serial \
 	--enable-tools \
 	--enable-usb \
-	--enable-udevrules
+	--enable-udevrules \
+	--enable-wiimote
 
 %{__make} \
 	cupsdir=%{cupsdir} \
