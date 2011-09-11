@@ -18,34 +18,47 @@ is_no "${NETWORKING}" && exit 0
 
 start() {
 	# Check if the service is already running?
-	if [ ! -f /var/lock/subsys/dund ]; then
-		msg_starting dund
-		daemon /usr/bin/dund ${DUND_OPTIONS}
-		RETVAL=$?
-		touch /var/lock/subsys/dund
-	else
+	if [ -f /var/lock/subsys/dund ]; then
 		msg_already_running dund
+		return
 	fi
+
+	msg_starting dund
+	daemon /usr/bin/dund ${DUND_OPTIONS}
+	RETVAL=$?
+	touch /var/lock/subsys/dund
 }
 
 stop() {
-	if [ -f /var/lock/subsys/dund ]; then
-		msg_stopping dund
-		killproc /usr/bin/dund
-		rm -f /var/lock/subsys/dund
-	else
+	if [ ! -f /var/lock/subsys/dund ]; then
 		msg_not_running dund
+		return
 	fi
+
+	msg_stopping dund
+	killproc /usr/bin/dund
+	rm -f /var/lock/subsys/dund
 }
 
 condrestart() {
-	if [ -f /var/lock/subsys/dund ]; then
-		stop
-		start
-	else
+	if [ ! -f /var/lock/subsys/dund ]; then
 		msg_not_running dund
 		RETVAL=$1
+		return
 	fi
+
+	stop
+	start
+}
+
+status() {
+	if [ ! -f /var/lock/subsys/dund ]; then
+		msg_not_running dund
+		RETVAL=3
+		return $RETVAL
+	fi
+
+	nls "dund is running"
 }
 
 RETVAL=0
@@ -65,13 +78,8 @@ case "$1" in
 	condrestart 0
 	;;
   status)
-	if [ -f /var/lock/subsys/dund ]; then
-		nls "dund is running"
-		exit 0
-	else
-		msg_not_running dund
-		exit 3
-	fi
+	status
+	RETVAL=$?
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|try-restart|reload|force-reload|status}"

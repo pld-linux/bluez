@@ -16,35 +16,50 @@
 
 start() {
 	# Check if the service is already running?
-	if [ ! -f /var/lock/subsys/bluetooth ]; then
-		if [ -x /sbin/udevadm ]; then
-			msg_starting "Bluetooth devices"
-			daemon /sbin/udevadm trigger --subsystem-match=bluetooth --action=add
-			RETVAL=$?
-			touch /var/lock/subsys/bluetooth
-		fi
-	else
+	if [ -f /var/lock/subsys/bluetooth ]; then
 		msg_already_running bluetooth
+		return
 	fi
+
+	if [ ! -x /sbin/udevadm ]; then
+		return
+	fi
+
+	msg_starting "Bluetooth devices"
+	daemon /sbin/udevadm trigger --subsystem-match=bluetooth --action=add
+	RETVAL=$?
+	touch /var/lock/subsys/bluetooth
 }
 
 stop() {
-	if [ -f /var/lock/subsys/bluetooth ]; then
-		# nothing needed to stop it
-		rm -f /var/lock/subsys/bluetooth
-	else
+	if [ ! -f /var/lock/subsys/bluetooth ]; then
 		msg_not_running bluetooth
+		return
 	fi
+
+	# nothing needed to stop it
+	rm -f /var/lock/subsys/bluetooth
 }
 
 condrestart() {
-	if [ -f /var/lock/subsys/bluetooth ]; then
-		stop
-		start
-	else
+	if [ ! -f /var/lock/subsys/bluetooth ]; then
 		msg_not_running bluetooth
 		RETVAL=$1
+		return
 	fi
+
+	stop
+	start
+}
+
+status() {
+	if [ ! -f /var/lock/subsys/bluetooth ]; then
+		msg_not_running bluetooth
+		RETVAL=3
+		return $RETVAL
+	fi
+
+	nls "bluetooth is running"
 }
 
 RETVAL=0
@@ -64,13 +79,8 @@ case "$1" in
 	condrestart 0
 	;;
   status)
-	if [ -f /var/lock/subsys/bluetooth ]; then
-		nls "bluetooth is running"
-		exit 0
-	else
-		msg_not_running bluetooth
-		exit 3
-	fi
+	status
+	RETVAL=$?
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|try-restart|reload|force-reload|status}"
