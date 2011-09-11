@@ -1,0 +1,8 @@
+description "Bluetooth subsystem starting and stopping. Turn HID adapters into Bluetooth ones."
+
+start on pld.sysinit-done
+stop on pld.shutdown-started
+
+script
+	/sbin/udevadm trigger --subsystem-match=bluetooth --action=add
+end script
