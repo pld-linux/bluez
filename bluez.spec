@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.96
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -15,6 +15,7 @@ Source4:	pand.init
 Source5:	rfcomm.init
 Patch0:		%{name}-etc_dir.patch
 Patch1:		%{name}-wacom-mode-2.patch
+Patch2:		%{name}-systemd.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.60
@@ -169,10 +170,19 @@ Bluetooth applications.
 Ten pakiet zawiera biblioteki statyczne, których można używać do
 aplikacji Bluetooth.
 
+%package systemd
+Summary:	systemd units for bluez
+Group:		Base
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description systemd
+systemd units for bluez.
+
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -182,6 +192,7 @@ aplikacji Bluetooth.
 %{__automake}
 %configure \
 	--with-ouifile=%{_datadir}/hwdata/oui.txt \
+	--with-systemdsystemunitdir=/lib/systemd/system \
 	--disable-silent-rules \
 	--enable-shared \
 	--enable-static \
@@ -342,3 +353,8 @@ fi
 %files libs-static
 %defattr(644,root,root,755)
 %{_libdir}/libbluetooth.a
+
+%files systemd
+%defattr(644,root,root,755)
+/lib/systemd/system/bluetooth.service
+%{_datadir}/dbus-1/system-services/org.bluez.service
