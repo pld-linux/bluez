@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.96
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -31,7 +31,7 @@ BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
-BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	rpmbuild(macros) >= 1.623
 BuildRequires:	udev-devel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	glib2 >= 1:2.16
@@ -192,7 +192,7 @@ systemd units for bluez.
 %{__automake}
 %configure \
 	--with-ouifile=%{_datadir}/hwdata/oui.txt \
-	--with-systemdsystemunitdir=/lib/systemd/system \
+	--with-systemdsystemunitdir=%{systemdunitdir} \
 	--disable-silent-rules \
 	--enable-shared \
 	--enable-static \
@@ -278,6 +278,15 @@ fi
 %post   libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
 
+%post systemd
+%systemd_post
+
+%preun systemd
+%systemd_preun bluetooth.service
+
+%postun systemd
+%systemd_postun bluetooth.service
+
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
@@ -356,5 +365,5 @@ fi
 
 %files systemd
 %defattr(644,root,root,755)
-/lib/systemd/system/bluetooth.service
+%{systemdunitdir}/bluetooth.service
 %{_datadir}/dbus-1/system-services/org.bluez.service
