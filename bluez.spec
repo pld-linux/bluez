@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.96
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -31,7 +31,7 @@ BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
-BuildRequires:	rpmbuild(macros) >= 1.623
+BuildRequires:	rpmbuild(macros) >= 1.626
 BuildRequires:	udev-devel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	glib2 >= 1:2.16
@@ -174,6 +174,7 @@ aplikacji Bluetooth.
 Summary:	systemd units for bluez
 Group:		Base
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	systemd-units >= 37-0.10
 
 %description systemd
 systemd units for bluez.
@@ -279,13 +280,13 @@ fi
 %postun libs -p /sbin/ldconfig
 
 %post systemd
-%systemd_post
+%systemd_post bluetooth.service
 
 %preun systemd
 %systemd_preun bluetooth.service
 
 %postun systemd
-%systemd_postun bluetooth.service
+%systemd_reload
 
 %files
 %defattr(644,root,root,755)
