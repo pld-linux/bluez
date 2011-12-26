@@ -1,13 +1,13 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.96
-Release:	4
+Version:	4.97
+Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.bz2
-# Source0-md5:	255c3dda8b93210ab0dcf8d04ddaf69f
+# Source0-md5:	b302cee7f9b9527d29775449d7e1dfe6
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
@@ -21,6 +21,7 @@ BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	bison
+BuildRequires:	check-devel >= 0.9.4
 BuildRequires:	dbus-devel >= 1.0
 BuildRequires:	glib2-devel >= 1:2.16
 BuildRequires:	gstreamer-devel >= 0.10.30
@@ -172,12 +173,16 @@ aplikacji Bluetooth.
 
 %package systemd
 Summary:	systemd units for bluez
+Summary(pl.UTF-8):	Jednostki systemd dla pakietu bluez
 Group:		Base
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	systemd-units >= 37-0.10
 
 %description systemd
 systemd units for bluez.
+
+%description systemd -l pl.UTF-8
+Jednostki systemd dla pakietu bluez.
 
 %prep
 %setup -q
@@ -216,6 +221,7 @@ systemd units for bluez.
 	--enable-pcmcia \
 	--enable-pnat \
 	--enable-serial \
+	--enable-thermometer \
 	--enable-tools \
 	--enable-usb \
 	--enable-udevrules \
