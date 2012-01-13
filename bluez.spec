@@ -1,13 +1,13 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.97
+Version:	4.98
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.bz2
-# Source0-md5:	b302cee7f9b9527d29775449d7e1dfe6
+# Source0-md5:	4aca8a0929250212e9a75fb60dd75b05
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
@@ -206,7 +206,6 @@ Jednostki systemd dla pakietu bluez.
 	--enable-audio \
 	--enable-bccmd \
 	--enable-capng \
-	--enable-configfiles \
 	--enable-cups \
 	--enable-dbusoob \
 	--enable-dfutool \
@@ -224,7 +223,6 @@ Jednostki systemd dla pakietu bluez.
 	--enable-thermometer \
 	--enable-tools \
 	--enable-usb \
-	--enable-udevrules \
 	--enable-wiimote
 
 %{__make} \
