@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.98
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -34,11 +34,12 @@ BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
 BuildRequires:	rpmbuild(macros) >= 1.626
 BuildRequires:	udev-devel
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 Requires:	glib2 >= 1:2.16
 Requires:	hwdata >= 0.225
 Requires:	rc-scripts
-Provides:	bluez-utils = %{epoch}:%{version}-%{release}
+Requires:	systemd-units >= 37-0.10
+Provides:	bluez-utils = %{version}-%{release}
 Obsoletes:	bluez-hciemu
 Obsoletes:	bluez-pan
 Obsoletes:	bluez-sdp
@@ -89,7 +90,7 @@ Summary:	ALSA plugins for Bluetooth audio devices
 Summary(pl.UTF-8):	Wtyczki systemu ALSA dla urządzeń dźwiękowych Bluetooth
 Group:		Libraries
 # bluetoothd + audio service
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 Requires:	alsa-lib >= 1.0.10-1
 
 %description -n alsa-plugins-bluetooth
@@ -102,7 +103,7 @@ Wtyczki systemu ALSA dla urządzeń dźwiękowych Bluetooth.
 Summary:	Bluetooth backend for CUPS
 Summary(pl.UTF-8):	Backend Bluetooth dla CUPS-a
 Group:		Applications/Printing
-Requires:	bluez-libs >= %{epoch}:%{version}-%{release}
+Requires:	bluez-libs >= %{version}-%{release}
 Requires:	cups
 
 %description -n cups-backend-bluetooth
@@ -115,7 +116,7 @@ Backend Bluetooth dla CUPS-a.
 Summary:	Bluetooth support for gstreamer
 Summary(pl.UTF-8):	Obsługa Bluetooth dla gstreamera
 Group:		Libraries
-Requires:	bluez-libs >= %{epoch}:%{version}-%{release}
+Requires:	bluez-libs >= %{version}-%{release}
 Requires:	gstreamer >= 0.10.30
 Requires:	gstreamer-plugins-base >= 0.10
 
@@ -145,7 +146,7 @@ Znaki towarowe BLUETOOTH są własnością Bluetooth SIG, Inc. z USA.
 Summary:	Header files for Bluetooth applications
 Summary(pl.UTF-8):	Pliki nagłówkowe dla aplikacji Bluetooth
 Group:		Development/Libraries
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 Obsoletes:	bluez-sdp-devel
 
 %description libs-devel
@@ -160,7 +161,7 @@ Bluetooth.
 Summary:	Static Bluetooth libraries
 Summary(pl.UTF-8):	Biblioteki statyczne Bluetooth
 Group:		Development/Libraries
-Requires:	%{name}-libs-devel = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs-devel = %{version}-%{release}
 Obsoletes:	bluez-sdp-static
 
 %description libs-static
@@ -170,19 +171,6 @@ Bluetooth applications.
 %description libs-static -l pl.UTF-8
 Ten pakiet zawiera biblioteki statyczne, których można używać do
 aplikacji Bluetooth.
-
-%package systemd
-Summary:	systemd units for bluez
-Summary(pl.UTF-8):	Jednostki systemd dla pakietu bluez
-Group:		Base
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	systemd-units >= 37-0.10
-
-%description systemd
-systemd units for bluez.
-
-%description systemd -l pl.UTF-8
-Jednostki systemd dla pakietu bluez.
 
 %prep
 %setup -q
@@ -267,6 +255,7 @@ rm -rf $RPM_BUILD_ROOT
 %service dund restart
 %service pand restart
 %service rfcomm restart
+%systemd_post bluetooth.service
 
 %preun
 if [ "$1" = "0" ]; then
@@ -279,18 +268,16 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del pand
 	/sbin/chkconfig --del rfcomm
 fi
+%systemd_preun bluetooth.service
+
+%postun
+%systemd_reload
+
+%triggerpostun -- bluez < 4.98-3
+%systemd_trigger bluetooth.service
 
 %post   libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
-
-%post systemd
-%systemd_post bluetooth.service
-
-%preun systemd
-%systemd_preun bluetooth.service
-
-%postun systemd
-%systemd_reload
 
 %files
 %defattr(644,root,root,755)
@@ -319,6 +306,8 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/rfcomm
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/bluetooth
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth.conf
+%{systemdunitdir}/bluetooth.service
+%{_datadir}/dbus-1/system-services/org.bluez.service
 %attr(755,root,root) %{udevdir}/bluetooth_serial
 %attr(755,root,root) %{udevdir}/hid2hci
 %{udevdir}/rules.d/97-bluetooth.rules
@@ -367,8 +356,3 @@ fi
 %files libs-static
 %defattr(644,root,root,755)
 %{_libdir}/libbluetooth.a
-
-%files systemd
-%defattr(644,root,root,755)
-%{systemdunitdir}/bluetooth.service
-%{_datadir}/dbus-1/system-services/org.bluez.service
