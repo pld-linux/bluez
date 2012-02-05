@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.98
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -43,6 +43,7 @@ Provides:	bluez-utils = %{version}-%{release}
 Obsoletes:	bluez-hciemu
 Obsoletes:	bluez-pan
 Obsoletes:	bluez-sdp
+Obsoletes:	bluez-systemd
 Obsoletes:	bluez-utils
 Obsoletes:	bluez-utils-init
 Conflicts:	bluez-bluefw
