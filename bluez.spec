@@ -1,13 +1,13 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.98
-Release:	4
+Version:	4.99
+Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.bz2
-# Source0-md5:	4aca8a0929250212e9a75fb60dd75b05
+# Source0-md5:	2387053eb5a7b02f37df4871df022a02
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
@@ -21,7 +21,7 @@ BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	bison
-BuildRequires:	check-devel >= 0.9.4
+BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	dbus-devel >= 1.0
 BuildRequires:	glib2-devel >= 1:2.16
 BuildRequires:	gstreamer-devel >= 0.10.30
