@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.99
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -16,6 +16,7 @@ Source5:	rfcomm.init
 Patch0:		%{name}-etc_dir.patch
 Patch1:		%{name}-wacom-mode-2.patch
 Patch2:		%{name}-systemd.patch
+Patch3:		%{name}-audio_socket.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.60
@@ -178,6 +179,7 @@ aplikacji Bluetooth.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__libtoolize}

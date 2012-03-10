@@ -1,0 +1,13 @@
+diff -urN bluez-4.99.orig/audio/audio.conf bluez-4.99/audio/audio.conf
+--- bluez-4.99.orig/audio/audio.conf	2010-08-25 07:10:02.000000000 +0200
++++ bluez-4.99/audio/audio.conf	2012-03-10 20:13:23.000000000 +0100
+@@ -4,6 +4,9 @@
+ # particular interface
+ [General]
+ 
++# Enable the audio socket of bluetoothd 
++Enable=Socket
++
+ # Switch to master role for incoming connections (defaults to true)
+ #Master=true
+ 
