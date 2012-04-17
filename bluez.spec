@@ -224,7 +224,8 @@ aplikacji Bluetooth.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
+install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
+	$RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
