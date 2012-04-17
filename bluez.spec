@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.99
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -35,11 +35,12 @@ BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
 BuildRequires:	rpmbuild(macros) >= 1.626
 BuildRequires:	udev-devel
+Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	glib2 >= 1:2.16
 Requires:	hwdata >= 0.225
 Requires:	rc-scripts
-Requires:	systemd-units >= 37-0.10
+Requires:	systemd-units >= 38
 Provides:	bluez-utils = %{version}-%{release}
 Obsoletes:	bluez-hciemu
 Obsoletes:	bluez-pan
