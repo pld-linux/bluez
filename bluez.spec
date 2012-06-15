@@ -1,13 +1,13 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.99
-Release:	6
+Version:	4.100
+Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.bz2
-# Source0-md5:	2387053eb5a7b02f37df4871df022a02
+# Source0-md5:	54809d476c52665ff64594b6828016b5
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
@@ -17,15 +17,14 @@ Patch0:		%{name}-etc_dir.patch
 Patch1:		%{name}-wacom-mode-2.patch
 Patch2:		%{name}-systemd.patch
 Patch3:		%{name}-audio_socket.patch
-Patch4:		udev-deprecated.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	check-devel >= 0.9.6
-BuildRequires:	dbus-devel >= 1.0
-BuildRequires:	glib2-devel >= 1:2.16
+BuildRequires:	dbus-devel >= 1.4
+BuildRequires:	glib2-devel >= 1:2.28
 BuildRequires:	gstreamer-devel >= 0.10.30
 BuildRequires:	gstreamer-plugins-base-devel >= 0.10
 BuildRequires:	libcap-ng-devel
@@ -38,7 +37,8 @@ BuildRequires:	rpmbuild(macros) >= 1.626
 BuildRequires:	udev-devel
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2 >= 1:2.16
+Requires:	dbus-libs >= 1.4
+Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
 Requires:	rc-scripts
 Requires:	systemd-units >= 38
@@ -182,7 +182,6 @@ aplikacji Bluetooth.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %build
 %{__libtoolize}
@@ -192,7 +191,7 @@ aplikacji Bluetooth.
 %{__automake}
 %configure \
 	--with-ouifile=%{_datadir}/hwdata/oui.txt \
-	--with-systemdsystemunitdir=%{systemdunitdir} \
+	--with-systemdunitdir=%{systemdunitdir} \
 	--disable-silent-rules \
 	--enable-shared \
 	--enable-static \
@@ -204,6 +203,7 @@ aplikacji Bluetooth.
 	--enable-dbusoob \
 	--enable-dfutool \
 	--enable-dund \
+	--enable-gatt \
 	--enable-gstreamer \
 	--enable-health \
 	--enable-hid2hci \
@@ -317,7 +317,6 @@ fi
 %{_datadir}/dbus-1/system-services/org.bluez.service
 %attr(755,root,root) %{udevdir}/bluetooth_serial
 %attr(755,root,root) %{udevdir}/hid2hci
-%{udevdir}/rules.d/97-bluetooth.rules
 %{udevdir}/rules.d/97-bluetooth-hid2hci.rules
 %{udevdir}/rules.d/97-bluetooth-serial.rules
 %{_mandir}/man1/ciptool.1*
@@ -338,7 +337,7 @@ fi
 %files -n alsa-plugins-bluetooth
 %defattr(644,root,root,755)
 %{_sysconfdir}/alsa/bluetooth.conf
-%attr(755,root,root) %{_libdir}/alsa-lib/libasound_module_ctl_bluetooth.so
+%attr(755,root,root) %{_libdir}/alsa-lib/libasound_module_ctl_bluetooth.so*
 %attr(755,root,root) %{_libdir}/alsa-lib/libasound_module_pcm_bluetooth.so
 
 %files -n cups-backend-bluetooth
