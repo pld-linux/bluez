@@ -1,8 +1,0 @@
---- /dev/null
-+++ b/src/org.bluez.service
-@@ -0,0 +1,5 @@
-+[D-BUS Service]
-+Name=org.bluez
-+Exec=/bin/false
-+User=root
-+SystemdService=dbus-org.bluez.service

@@ -1,13 +1,13 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.100
+Version:	4.101
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.bz2
-# Source0-md5:	54809d476c52665ff64594b6828016b5
+# Source0-md5:	902b390af95c6c5d6d1a17d94c8344ab
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	dund.init
@@ -15,8 +15,7 @@ Source4:	pand.init
 Source5:	rfcomm.init
 Patch0:		%{name}-etc_dir.patch
 Patch1:		%{name}-wacom-mode-2.patch
-Patch2:		%{name}-systemd.patch
-Patch3:		%{name}-audio_socket.patch
+Patch2:		%{name}-audio_socket.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.60
@@ -181,7 +180,6 @@ aplikacji Bluetooth.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 %{__libtoolize}
