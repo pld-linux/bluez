@@ -2,7 +2,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	4.101
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -24,8 +24,8 @@ BuildRequires:	bison
 BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	dbus-devel >= 1.4
 BuildRequires:	glib2-devel >= 1:2.28
-BuildRequires:	gstreamer-devel >= 0.10.30
-BuildRequires:	gstreamer-plugins-base-devel >= 0.10
+BuildRequires:	gstreamer0.10-devel >= 0.10.30
+BuildRequires:	gstreamer0.10-plugins-base-devel >= 0.10
 BuildRequires:	libcap-ng-devel
 BuildRequires:	libsndfile-devel
 BuildRequires:	libtool
@@ -115,18 +115,19 @@ Bluetooth backend for CUPS.
 %description -n cups-backend-bluetooth -l pl.UTF-8
 Backend Bluetooth dla CUPS-a.
 
-%package -n gstreamer-bluetooth
+%package -n gstreamer0.10-bluetooth
 Summary:	Bluetooth support for gstreamer
 Summary(pl.UTF-8):	Obsługa Bluetooth dla gstreamera
 Group:		Libraries
 Requires:	bluez-libs >= %{version}-%{release}
-Requires:	gstreamer >= 0.10.30
-Requires:	gstreamer-plugins-base >= 0.10
+Requires:	gstreamer0.10 >= 0.10.30
+Requires:	gstreamer0.10-plugins-base >= 0.10
+Obsoletes:	gstreamer-bluetooth < 4.101-3
 
-%description -n gstreamer-bluetooth
+%description -n gstreamer0.10-bluetooth
 Bluetooth support for gstreamer.
 
-%description -n gstreamer-bluetooth -l pl.UTF-8
+%description -n gstreamer0.10-bluetooth -l pl.UTF-8
 Obsługa Bluetooth dla gstreamera.
 
 %package libs
@@ -342,7 +343,7 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_prefix}/lib/cups/backend/bluetooth
 
-%files -n gstreamer-bluetooth
+%files -n gstreamer0.10-bluetooth
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/gstreamer*/libgstbluetooth.so
 
