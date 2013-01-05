@@ -1,39 +1,40 @@
+# TODO:
+# - verify/update bluetooth init script
+# - update (or drop if it's no longer applicable) rfcomm init script
+# - separate obexd here? / separate -client in obexd.spec
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	4.101
-Release:	3
+Version:	5.0
+Release:	0.1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
-Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.bz2
-# Source0-md5:	902b390af95c6c5d6d1a17d94c8344ab
+Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
+# Source0-md5:	03230ccf44536087653b56a45c99e2b4
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
-Source3:	dund.init
-Source4:	pand.init
+# FIXME: rfcomm.conf no longer supported
 Source5:	rfcomm.init
-Patch0:		%{name}-etc_dir.patch
-Patch1:		%{name}-wacom-mode-2.patch
-Patch2:		%{name}-audio_socket.patch
+Patch0:		%{name}-wacom-mode-2.patch
+Patch1:		%{name}-audio_socket.patch
+Patch2:		%{name}-am.patch
 URL:		http://www.bluez.org/
-BuildRequires:	alsa-lib-devel >= 1.0.10-1
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
-BuildRequires:	bison
 BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	dbus-devel >= 1.4
 BuildRequires:	glib2-devel >= 1:2.28
-BuildRequires:	gstreamer0.10-devel >= 0.10.30
-BuildRequires:	gstreamer0.10-plugins-base-devel >= 0.10
-BuildRequires:	libcap-ng-devel
-BuildRequires:	libsndfile-devel
+BuildRequires:	libical-devel
 BuildRequires:	libtool
-BuildRequires:	libusb-compat-devel
+BuildRequires:	libusb-compat-devel >= 0.1
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
 BuildRequires:	rpmbuild(macros) >= 1.626
-BuildRequires:	udev-devel
+BuildRequires:	systemd-units >= 38
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	udev-devel >= 1:143
+BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus-libs >= 1.4
@@ -41,13 +42,23 @@ Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
 Requires:	rc-scripts
 Requires:	systemd-units >= 38
+Requires:	udev >= 1:143
+Provides:	bluez-hcidump = %{version}
 Provides:	bluez-utils = %{version}-%{release}
+Provides:	obexd = %{version}
+# moved somewhere or dropped?
+#Obsoletes:	alsa-plugins-bluetooth
+Obsoletes:	bluez-hcidump
 Obsoletes:	bluez-hciemu
 Obsoletes:	bluez-pan
 Obsoletes:	bluez-sdp
 Obsoletes:	bluez-systemd
 Obsoletes:	bluez-utils
 Obsoletes:	bluez-utils-init
+Obsoletes:	obexd
+# moved somewhere or dropped?
+#Obsoletes:	gstreamer-bluetooth < 4.101-3
+#Obsoletes:	gstreamer0.10-bluetooth < 5
 Conflicts:	bluez-bluefw
 ExcludeArch:	s390 s390x
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -59,48 +70,26 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 Bluetooth utilities:
  - bluetoothd
- - dund
- - hcitool
  - hciattach
  - hciconfig
- - hciemu
- - hidd
+ - hcidump
+ - hcitool
  - l2ping
- - pand
  - start scripts (PLD)
- - PCMCIA configuration files
 
 The BLUETOOTH trademarks are owned by Bluetooth SIG, Inc., U.S.A.
 
 %description -l pl.UTF-8
 Narzędzia Bluetooth:
  - bluetoothd
- - dund
- - hcitool
  - hciattach
  - hciconfig
- - hciemu
- - hidd
+ - hcidump
+ - hcitool
  - l2ping
- - pand
  - skrypty startowe (PLD)
- - pliki konfiguracji PCMCIA
 
 Znaki towarowe BLUETOOTH są własnością Bluetooth SIG, Inc. z USA.
-
-%package -n alsa-plugins-bluetooth
-Summary:	ALSA plugins for Bluetooth audio devices
-Summary(pl.UTF-8):	Wtyczki systemu ALSA dla urządzeń dźwiękowych Bluetooth
-Group:		Libraries
-# bluetoothd + audio service
-Requires:	%{name} = %{version}-%{release}
-Requires:	alsa-lib >= 1.0.10-1
-
-%description -n alsa-plugins-bluetooth
-ALSA plugins for Bluetooth audio devices.
-
-%description -n alsa-plugins-bluetooth -l pl.UTF-8
-Wtyczki systemu ALSA dla urządzeń dźwiękowych Bluetooth.
 
 %package -n cups-backend-bluetooth
 Summary:	Bluetooth backend for CUPS
@@ -114,21 +103,6 @@ Bluetooth backend for CUPS.
 
 %description -n cups-backend-bluetooth -l pl.UTF-8
 Backend Bluetooth dla CUPS-a.
-
-%package -n gstreamer0.10-bluetooth
-Summary:	Bluetooth support for gstreamer
-Summary(pl.UTF-8):	Obsługa Bluetooth dla gstreamera
-Group:		Libraries
-Requires:	bluez-libs >= %{version}-%{release}
-Requires:	gstreamer0.10 >= 0.10.30
-Requires:	gstreamer0.10-plugins-base >= 0.10
-Obsoletes:	gstreamer-bluetooth < 4.101-3
-
-%description -n gstreamer0.10-bluetooth
-Bluetooth support for gstreamer.
-
-%description -n gstreamer0.10-bluetooth -l pl.UTF-8
-Obsługa Bluetooth dla gstreamera.
 
 %package libs
 Summary:	Bluetooth libraries
@@ -189,34 +163,12 @@ aplikacji Bluetooth.
 %{__autoheader}
 %{__automake}
 %configure \
-	--with-ouifile=%{_datadir}/hwdata/oui.txt \
-	--with-systemdunitdir=%{systemdunitdir} \
 	--disable-silent-rules \
-	--enable-shared \
-	--enable-static \
-	--enable-alsa \
-	--enable-audio \
-	--enable-bccmd \
-	--enable-capng \
-	--enable-cups \
-	--enable-dbusoob \
-	--enable-dfutool \
-	--enable-dund \
-	--enable-gatt \
-	--enable-gstreamer \
-	--enable-health \
-	--enable-hid2hci \
-	--enable-hidd \
-	--enable-input \
-	--enable-network \
-	--enable-pand \
-	--enable-pcmcia \
-	--enable-pnat \
-	--enable-serial \
-	--enable-thermometer \
-	--enable-tools \
-	--enable-usb \
-	--enable-wiimote
+	--enable-library \
+	--enable-static
+# these options are broken; BR systemd instead
+#	--with-systemdsystemunitdir=%{systemdunitdir} \
+#	--with-systemduserunitdir=%{_prefix}/lib/systemd/user \
 
 %{__make} \
 	cupsdir=%{cupsdir} \
@@ -226,7 +178,7 @@ aplikacji Bluetooth.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
-	$RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins
+	$RPM_BUILD_ROOT{%{_libdir}/bluetooth/plugins,%{_sysconfdir}/bluetooth}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -236,42 +188,30 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/bluetooth
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/dund
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/pand
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/rfcomm
 
-install audio/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
-install input/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
-install network/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
-install serial/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
+install profiles/audio/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
+install profiles/input/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
+install profiles/network/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
+install profiles/proximity/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 
-mv -fT $RPM_BUILD_ROOT{%{_datadir},%{_sysconfdir}}/alsa
-
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/{alsa-lib/*.{la,a},gstreamer*/libgstbluetooth.{la,a},libbluetooth.la}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libbluetooth.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add bluetooth
-/sbin/chkconfig --add dund
-/sbin/chkconfig --add pand
 /sbin/chkconfig --add rfcomm
 %service bluetooth restart
-%service dund restart
-%service pand restart
 %service rfcomm restart
 %systemd_post bluetooth.service
 
 %preun
 if [ "$1" = "0" ]; then
 	%service bluetooth stop
-	%service dund stop
-	%service pand stop
 	%service rfcomm stop
 	/sbin/chkconfig --del bluetooth
-	/sbin/chkconfig --del dund
-	/sbin/chkconfig --del pand
 	/sbin/chkconfig --del rfcomm
 fi
 %systemd_preun bluetooth.service
@@ -288,64 +228,54 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
+%attr(755,root,root) %{_bindir}/bccmd
+%attr(755,root,root) %{_bindir}/bluetoothctl
+%attr(755,root,root) %{_bindir}/btmon
 %attr(755,root,root) %{_bindir}/ciptool
-%attr(755,root,root) %{_bindir}/dfutool
-%attr(755,root,root) %{_bindir}/dund
-%attr(755,root,root) %{_bindir}/gatttool
+%attr(755,root,root) %{_bindir}/hciattach
+%attr(755,root,root) %{_bindir}/hciconfig
+%attr(755,root,root) %{_bindir}/hcidump
 %attr(755,root,root) %{_bindir}/hcitool
-%attr(755,root,root) %{_bindir}/hidd
 %attr(755,root,root) %{_bindir}/l2ping
-%attr(755,root,root) %{_bindir}/pand
+%attr(755,root,root) %{_bindir}/l2test
+%attr(755,root,root) %{_bindir}/rctest
 %attr(755,root,root) %{_bindir}/rfcomm
 %attr(755,root,root) %{_bindir}/sdptool
-%attr(755,root,root) %{_sbindir}/bccmd
-%attr(755,root,root) %{_sbindir}/bluetoothd
-%attr(755,root,root) %{_sbindir}/hciattach
-%attr(755,root,root) %{_sbindir}/hciconfig
 %dir %{_libdir}/bluetooth
+%attr(755,root,root) %{_libdir}/bluetooth/bluetoothd
+%attr(755,root,root) %{_libdir}/bluetooth/obexd
 %dir %{_libdir}/bluetooth/plugins
 %dir %{_sysconfdir}/bluetooth
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/*.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/audio.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/input.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/network.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/proximity.conf
 %attr(754,root,root) /etc/rc.d/init.d/bluetooth
-%attr(754,root,root) /etc/rc.d/init.d/dund
-%attr(754,root,root) /etc/rc.d/init.d/pand
 %attr(754,root,root) /etc/rc.d/init.d/rfcomm
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/bluetooth
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth.conf
 %{systemdunitdir}/bluetooth.service
+%{_prefix}/lib/systemd/user/obex.service
 %{_datadir}/dbus-1/system-services/org.bluez.service
-%attr(755,root,root) %{udevdir}/bluetooth_serial
+%{_datadir}/dbus-1/services/org.bluez.obex.service
 %attr(755,root,root) %{udevdir}/hid2hci
-%{udevdir}/rules.d/97-bluetooth-hid2hci.rules
-%{udevdir}/rules.d/97-bluetooth-serial.rules
+%{udevdir}/rules.d/97-hid2hci.rules
+%{_mandir}/man1/bccmd.1*
 %{_mandir}/man1/ciptool.1*
-%{_mandir}/man1/dfutool.1*
-%{_mandir}/man1/dund.1*
+%{_mandir}/man1/hciattach.1*
+%{_mandir}/man1/hciconfig.1*
+%{_mandir}/man1/hcidump.1*
 %{_mandir}/man1/hcitool.1*
-%{_mandir}/man1/hidd.1*
-%{_mandir}/man1/pand.1*
+%{_mandir}/man1/hid2hci.1*
+%{_mandir}/man1/l2ping.1*
+%{_mandir}/man1/rctest.1*
 %{_mandir}/man1/rfcomm.1*
 %{_mandir}/man1/sdptool.1*
-%{_mandir}/man8/bccmd.8*
 %{_mandir}/man8/bluetoothd.8*
-%{_mandir}/man8/hciattach.8*
-%{_mandir}/man8/hciconfig.8*
-%{_mandir}/man8/hid2hci.8*
-%{_mandir}/man8/l2ping.8*
-
-%files -n alsa-plugins-bluetooth
-%defattr(644,root,root,755)
-%{_sysconfdir}/alsa/bluetooth.conf
-%attr(755,root,root) %{_libdir}/alsa-lib/libasound_module_ctl_bluetooth.so*
-%attr(755,root,root) %{_libdir}/alsa-lib/libasound_module_pcm_bluetooth.so
 
 %files -n cups-backend-bluetooth
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_prefix}/lib/cups/backend/bluetooth
-
-%files -n gstreamer0.10-bluetooth
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/gstreamer*/libgstbluetooth.so
 
 %files libs
 %defattr(644,root,root,755)
