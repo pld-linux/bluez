@@ -5,20 +5,19 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.0
+Version:	5.1
 Release:	0.1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
 Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	03230ccf44536087653b56a45c99e2b4
+# Source0-md5:	4dafa523f776acf112f81aa216ff7509
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # FIXME: rfcomm.conf no longer supported
 Source5:	rfcomm.init
 Patch0:		%{name}-wacom-mode-2.patch
 Patch1:		%{name}-audio_socket.patch
-Patch2:		%{name}-am.patch
 URL:		http://www.bluez.org/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
@@ -154,7 +153,6 @@ aplikacji Bluetooth.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__libtoolize}
