@@ -6,7 +6,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	5.7
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
@@ -45,6 +45,8 @@ Requires:	udev >= 1:143
 Provides:	bluez-hcidump = %{version}
 Provides:	bluez-utils = %{version}-%{release}
 Provides:	obexd = %{version}
+Provides:	dbus(org.openobex.client)
+Provides:	obex-data-server = %{version}
 # moved somewhere or dropped?
 #Obsoletes:	alsa-plugins-bluetooth
 Obsoletes:	bluez-hcidump
@@ -55,6 +57,7 @@ Obsoletes:	bluez-systemd
 Obsoletes:	bluez-utils
 Obsoletes:	bluez-utils-init
 Obsoletes:	obexd
+Obsoletes:	obex-data-server
 # moved somewhere or dropped?
 #Obsoletes:	gstreamer-bluetooth < 4.101-3
 #Obsoletes:	gstreamer0.10-bluetooth < 5
