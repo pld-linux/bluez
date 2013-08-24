@@ -5,19 +5,18 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.7
-Release:	2
+Version:	5.8
+Release:	1
 License:	GPL v2+
 Group:		Applications/System
 #Source0Download: http://www.bluez.org/download.html
-Source0:	http://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	a4e84f49276463830aeeffbd79f16a4f
+Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
+# Source0-md5:	e0d8a362c714bd48d9bd9393f009201c
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # FIXME: rfcomm.conf no longer supported
 Source5:	rfcomm.init
 Patch0:		%{name}-wacom-mode-2.patch
-Patch1:		%{name}-audio_socket.patch
 URL:		http://www.bluez.org/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
@@ -155,7 +154,6 @@ aplikacji Bluetooth.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -191,7 +189,6 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/bluetooth
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/rfcomm
 
-install profiles/audio/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 install profiles/input/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 install profiles/network/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 install profiles/proximity/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
@@ -247,7 +244,6 @@ fi
 %attr(755,root,root) %{_libdir}/bluetooth/obexd
 %dir %{_libdir}/bluetooth/plugins
 %dir %{_sysconfdir}/bluetooth
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/audio.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/input.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/network.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/proximity.conf
