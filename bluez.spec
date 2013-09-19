@@ -5,13 +5,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.8
+Version:	5.9
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
-#Source0Download: http://www.bluez.org/download.html
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	e0d8a362c714bd48d9bd9393f009201c
+# Source0-md5:	d002e7266ea180c9609e55360219a5bd
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # FIXME: rfcomm.conf no longer supported
@@ -25,7 +24,6 @@ BuildRequires:	dbus-devel >= 1.4
 BuildRequires:	glib2-devel >= 1:2.28
 BuildRequires:	libical-devel
 BuildRequires:	libtool
-BuildRequires:	libusb-compat-devel >= 0.1
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
 BuildRequires:	rpmbuild(macros) >= 1.626
