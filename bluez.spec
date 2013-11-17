@@ -5,12 +5,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.10
+Version:	5.11
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	8ca7c5343b14ca42c2973c22e69d4eb8
+# Source0-md5:	8a2544d8c88e1f4bd3abe9525282b13c
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # FIXME: rfcomm.conf no longer supported
