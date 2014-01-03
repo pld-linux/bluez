@@ -240,6 +240,7 @@ fi
 %attr(755,root,root) %{_libdir}/bluetooth/obexd
 %dir %{_libdir}/bluetooth/plugins
 %attr(755,root,root) %{_libdir}/bluetooth/plugins/sixaxis.so
+%dir %{_libdir}/obex
 %dir %{_libdir}/obex/plugins
 %dir %{_sysconfdir}/bluetooth
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/input.conf
