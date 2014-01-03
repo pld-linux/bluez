@@ -1,20 +1,17 @@
 # TODO:
 # - verify/update bluetooth init script
-# - update (or drop if it's no longer applicable) rfcomm init script
-# - separate obexd here? / separate -client in obexd.spec
+# - separate obex?
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.11
+Version:	5.13
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	8a2544d8c88e1f4bd3abe9525282b13c
+# Source0-md5:	c68f8cb270110256a684403ee43b5f79
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
-# FIXME: rfcomm.conf no longer supported
-Source5:	rfcomm.init
 Patch0:		%{name}-wacom-mode-2.patch
 URL:		http://www.bluez.org/
 BuildRequires:	autoconf >= 2.60
@@ -26,8 +23,7 @@ BuildRequires:	libical-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
-BuildRequires:	rpmbuild(macros) >= 1.626
-BuildRequires:	systemd-units >= 38
+BuildRequires:	rpmbuild(macros) >= 1.682
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	udev-devel >= 1:143
 BuildRequires:	xz
@@ -161,11 +157,12 @@ aplikacji Bluetooth.
 %{__automake}
 %configure \
 	--disable-silent-rules \
+	--enable-experimental \
 	--enable-library \
-	--enable-static
-# these options are broken; BR systemd instead
-#	--with-systemdsystemunitdir=%{systemdunitdir} \
-#	--with-systemduserunitdir=%{_prefix}/lib/systemd/user \
+	--enable-sixaxis \
+	--enable-static \
+	--with-systemdsystemunitdir=%{systemdunitdir} \
+	--with-systemduserunitdir=%{systemduserunitdir}
 
 %{__make} \
 	cupsdir=%{cupsdir} \
@@ -175,7 +172,7 @@ aplikacji Bluetooth.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
-	$RPM_BUILD_ROOT{%{_libdir}/bluetooth/plugins,%{_sysconfdir}/bluetooth}
+	$RPM_BUILD_ROOT{%{_libdir}/{bluetooth,obex}/plugins,%{_sysconfdir}/bluetooth}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -183,9 +180,10 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
 	rulesdir=%{udevdir}/rules.d \
 	udevdir=%{udevdir}
 
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{la,a}
+
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/bluetooth
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
-install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/rfcomm
 
 install profiles/input/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 install profiles/network/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
@@ -198,17 +196,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add bluetooth
-/sbin/chkconfig --add rfcomm
 %service bluetooth restart
-%service rfcomm restart
 %systemd_post bluetooth.service
 
 %preun
 if [ "$1" = "0" ]; then
 	%service bluetooth stop
-	%service rfcomm stop
 	/sbin/chkconfig --del bluetooth
-	/sbin/chkconfig --del rfcomm
 fi
 %systemd_preun bluetooth.service
 
@@ -217,6 +211,10 @@ fi
 
 %triggerpostun -- bluez < 4.98-3
 %systemd_trigger bluetooth.service
+
+%triggerpostun -- bluez < 5.13-1
+%service rfcomm stop
+/sbin/chkconfig --del rfcomm
 
 %post   libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
@@ -241,18 +239,19 @@ fi
 %attr(755,root,root) %{_libdir}/bluetooth/bluetoothd
 %attr(755,root,root) %{_libdir}/bluetooth/obexd
 %dir %{_libdir}/bluetooth/plugins
+%attr(755,root,root) %{_libdir}/bluetooth/plugins/sixaxis.so
+%dir %{_libdir}/obex/plugins
 %dir %{_sysconfdir}/bluetooth
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/input.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/network.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/proximity.conf
 %attr(754,root,root) /etc/rc.d/init.d/bluetooth
-%attr(754,root,root) /etc/rc.d/init.d/rfcomm
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/bluetooth
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth.conf
 %{systemdunitdir}/bluetooth.service
-%{_prefix}/lib/systemd/user/obex.service
-%{_datadir}/dbus-1/system-services/org.bluez.service
+%{systemduserunitdir}/obex.service
 %{_datadir}/dbus-1/services/org.bluez.obex.service
+%{_datadir}/dbus-1/system-services/org.bluez.service
 %attr(755,root,root) %{udevdir}/hid2hci
 %{udevdir}/rules.d/97-hid2hci.rules
 %{_mandir}/man1/bccmd.1*
