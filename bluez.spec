@@ -4,12 +4,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.13
-Release:	2
+Version:	5.14
+Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	c68f8cb270110256a684403ee43b5f79
+# Source0-md5:	81f2ce3bc9a9ebe58ccfce6660031611
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-wacom-mode-2.patch
@@ -17,7 +17,7 @@ URL:		http://www.bluez.org/
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	check-devel >= 0.9.6
-BuildRequires:	dbus-devel >= 1.4
+BuildRequires:	dbus-devel >= 1.6
 BuildRequires:	glib2-devel >= 1:2.28
 BuildRequires:	libical-devel
 BuildRequires:	libtool
@@ -29,7 +29,7 @@ BuildRequires:	udev-devel >= 1:143
 BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	dbus-libs >= 1.4
+Requires:	dbus-libs >= 1.6
 Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
 Requires:	rc-scripts
@@ -223,6 +223,7 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
 %attr(755,root,root) %{_bindir}/bccmd
+%attr(755,root,root) %{_bindir}/bluemoon
 %attr(755,root,root) %{_bindir}/bluetoothctl
 %attr(755,root,root) %{_bindir}/btmon
 %attr(755,root,root) %{_bindir}/ciptool
