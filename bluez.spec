@@ -4,12 +4,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.15
+Version:	5.17
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	92e29e51b361aab78cca30ef0cf8812e
+# Source0-md5:	5e6e41f0a275092ace303e813cd6f33b
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-wacom-mode-2.patch
