@@ -4,12 +4,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.21
+Version:	5.22
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	d5a0d05520e013f2394bf1d0bac12889
+# Source0-md5:	fd0783c8bc524bc9b26514aad1f85814
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.bluez.org/
@@ -24,7 +24,7 @@ BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
 BuildRequires:	rpmbuild(macros) >= 1.682
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	udev-devel >= 1:143
+BuildRequires:	udev-devel >= 1:172
 BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
@@ -33,7 +33,7 @@ Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
 Requires:	rc-scripts
 Requires:	systemd-units >= 38
-Requires:	udev >= 1:143
+Requires:	udev >= 1:172
 Provides:	bluez-hcidump = %{version}
 Provides:	bluez-utils = %{version}-%{release}
 Provides:	obexd = %{version}
@@ -231,6 +231,7 @@ fi
 %attr(755,root,root) %{_bindir}/hcitool
 %attr(755,root,root) %{_bindir}/l2ping
 %attr(755,root,root) %{_bindir}/l2test
+%attr(755,root,root) %{_bindir}/mpris-proxy
 %attr(755,root,root) %{_bindir}/rctest
 %attr(755,root,root) %{_bindir}/rfcomm
 %attr(755,root,root) %{_bindir}/sdptool
