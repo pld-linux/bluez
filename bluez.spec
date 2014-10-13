@@ -4,12 +4,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.23
+Version:	5.24
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	b6ebf545d496087f3bc2b4aa86f89eb4
+# Source0-md5:	37b785185fb98269b45e51b254bd8d3d
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.bluez.org/
@@ -231,6 +231,7 @@ fi
 %attr(755,root,root) %{_bindir}/hcitool
 %attr(755,root,root) %{_bindir}/l2ping
 %attr(755,root,root) %{_bindir}/l2test
+%attr(755,root,root) %{_bindir}/mcaptest
 %attr(755,root,root) %{_bindir}/mpris-proxy
 %attr(755,root,root) %{_bindir}/rctest
 %attr(755,root,root) %{_bindir}/rfcomm
