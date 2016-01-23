@@ -4,12 +4,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.36
+Version:	5.37
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	9a0ee479cacc44fac68f6a65b1cd3eba
+# Source0-md5:	33177e5743e24b2b3738f72be64e3ffb
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.bluez.org/
@@ -223,6 +223,7 @@ fi
 %attr(755,root,root) %{_bindir}/bccmd
 %attr(755,root,root) %{_bindir}/bluemoon
 %attr(755,root,root) %{_bindir}/bluetoothctl
+%attr(755,root,root) %{_bindir}/btattach
 %attr(755,root,root) %{_bindir}/btmon
 %attr(755,root,root) %{_bindir}/ciptool
 %attr(755,root,root) %{_bindir}/hciattach
@@ -257,6 +258,7 @@ fi
 %attr(755,root,root) %{udevdir}/hid2hci
 %{udevdir}/rules.d/97-hid2hci.rules
 %{_mandir}/man1/bccmd.1*
+%{_mandir}/man1/btattach.1*
 %{_mandir}/man1/ciptool.1*
 %{_mandir}/man1/hciattach.1*
 %{_mandir}/man1/hciconfig.1*
