@@ -1,18 +1,23 @@
 # TODO:
 # - verify/update bluetooth init script
 # - separate obex?
+#
+# Conditional build:
+%bcond_without	deprecated	# deprecated tools (ciptool,hciattach,hciconfig,hcidump,hcitool,rfcomm,sdptool)
+#
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.43
+Version:	5.44
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	698def88df96840dfbb0858bb6d73350
+# Source0-md5:	94273617129ced06612fcb9f5273d14c
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.bluez.org/
+BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	check-devel >= 0.9.6
@@ -155,8 +160,13 @@ aplikacji Bluetooth.
 %{__automake}
 %configure \
 	--disable-silent-rules \
+	%{?with_deprecated:--enable-deprecated} \
 	--enable-experimental \
+	--enable-health \
 	--enable-library \
+	--enable-midi \
+	--enable-nfc \
+	--enable-sap \
 	--enable-sixaxis \
 	--enable-static \
 	--with-systemdsystemunitdir=%{systemdunitdir} \
@@ -225,18 +235,20 @@ fi
 %attr(755,root,root) %{_bindir}/bluetoothctl
 %attr(755,root,root) %{_bindir}/btattach
 %attr(755,root,root) %{_bindir}/btmon
-%attr(755,root,root) %{_bindir}/ciptool
-%attr(755,root,root) %{_bindir}/hciattach
-%attr(755,root,root) %{_bindir}/hciconfig
-%attr(755,root,root) %{_bindir}/hcidump
-%attr(755,root,root) %{_bindir}/hcitool
 %attr(755,root,root) %{_bindir}/hex2hcd
 %attr(755,root,root) %{_bindir}/l2ping
 %attr(755,root,root) %{_bindir}/l2test
 %attr(755,root,root) %{_bindir}/mpris-proxy
 %attr(755,root,root) %{_bindir}/rctest
+%if %{with deprecated}
+%attr(755,root,root) %{_bindir}/ciptool
+%attr(755,root,root) %{_bindir}/hciattach
+%attr(755,root,root) %{_bindir}/hciconfig
+%attr(755,root,root) %{_bindir}/hcidump
+%attr(755,root,root) %{_bindir}/hcitool
 %attr(755,root,root) %{_bindir}/rfcomm
 %attr(755,root,root) %{_bindir}/sdptool
+%endif
 %dir %{_libdir}/bluetooth
 %attr(755,root,root) %{_libdir}/bluetooth/bluetoothd
 %attr(755,root,root) %{_libdir}/bluetooth/obexd
@@ -259,16 +271,18 @@ fi
 %{udevdir}/rules.d/97-hid2hci.rules
 %{_mandir}/man1/bccmd.1*
 %{_mandir}/man1/btattach.1*
+%{_mandir}/man1/hid2hci.1*
+%{_mandir}/man1/l2ping.1*
+%{_mandir}/man1/rctest.1*
+%if %{with deprecated}
 %{_mandir}/man1/ciptool.1*
 %{_mandir}/man1/hciattach.1*
 %{_mandir}/man1/hciconfig.1*
 %{_mandir}/man1/hcidump.1*
 %{_mandir}/man1/hcitool.1*
-%{_mandir}/man1/hid2hci.1*
-%{_mandir}/man1/l2ping.1*
-%{_mandir}/man1/rctest.1*
 %{_mandir}/man1/rfcomm.1*
 %{_mandir}/man1/sdptool.1*
+%endif
 %{_mandir}/man8/bluetoothd.8*
 
 %files -n cups-backend-bluetooth
