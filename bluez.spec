@@ -8,12 +8,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.45
+Version:	5.47
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	20d936917afc7e1ffa091f5213081c55
+# Source0-md5:	783e15f65e70cdb8f721c659e140dd56
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.bluez.org/
@@ -195,7 +195,6 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
 
 install profiles/input/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 install profiles/network/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
-install profiles/proximity/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libbluetooth.la
 
@@ -259,7 +258,6 @@ fi
 %dir %{_sysconfdir}/bluetooth
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/input.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/network.conf
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/proximity.conf
 %attr(754,root,root) /etc/rc.d/init.d/bluetooth
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/bluetooth
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth.conf
