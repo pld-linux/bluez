@@ -248,9 +248,10 @@ fi
 %attr(755,root,root) %{_bindir}/rfcomm
 %attr(755,root,root) %{_bindir}/sdptool
 %endif
+%dir %{_libexecdir}/bluetooth
+%attr(755,root,root) %{_libexecdir}/bluetooth/bluetoothd
+%attr(755,root,root) %{_libexecdir}/bluetooth/obexd
 %dir %{_libdir}/bluetooth
-%attr(755,root,root) %{_libdir}/bluetooth/bluetoothd
-%attr(755,root,root) %{_libdir}/bluetooth/obexd
 %dir %{_libdir}/bluetooth/plugins
 %attr(755,root,root) %{_libdir}/bluetooth/plugins/sixaxis.so
 %dir %{_libdir}/obex
