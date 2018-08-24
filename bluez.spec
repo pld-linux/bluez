@@ -8,12 +8,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.49
+Version:	5.50
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	f210e84db707d66af3b889084a6f8bef
+# Source0-md5:	8e35c67c81a55d3ad4c9f22280dae178
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.bluez.org/
@@ -22,7 +22,9 @@ BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	dbus-devel >= 1.6
+BuildRequires:	ell-devel >= 0.3
 BuildRequires:	glib2-devel >= 1:2.28
+BuildRequires:	json-c-devel
 BuildRequires:	libical-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig >= 1:0.9.0
@@ -161,9 +163,11 @@ aplikacji Bluetooth.
 %configure \
 	--disable-silent-rules \
 	%{?with_deprecated:--enable-deprecated} \
+	--enable-btpclient \
 	--enable-experimental \
 	--enable-health \
 	--enable-library \
+	--enable-mesh \
 	--enable-midi \
 	--enable-nfc \
 	--enable-sap \
@@ -237,6 +241,7 @@ fi
 %attr(755,root,root) %{_bindir}/hex2hcd
 %attr(755,root,root) %{_bindir}/l2ping
 %attr(755,root,root) %{_bindir}/l2test
+%attr(755,root,root) %{_bindir}/meshctl
 %attr(755,root,root) %{_bindir}/mpris-proxy
 %attr(755,root,root) %{_bindir}/rctest
 %if %{with deprecated}
@@ -248,7 +253,9 @@ fi
 %attr(755,root,root) %{_bindir}/rfcomm
 %attr(755,root,root) %{_bindir}/sdptool
 %endif
+%if "%{_libexecdir}" != "%{_libdir}"
 %dir %{_libexecdir}/bluetooth
+%endif
 %attr(755,root,root) %{_libexecdir}/bluetooth/bluetoothd
 %attr(755,root,root) %{_libexecdir}/bluetooth/obexd
 %dir %{_libdir}/bluetooth
