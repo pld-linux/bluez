@@ -8,12 +8,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.50
+Version:	5.51
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	8e35c67c81a55d3ad4c9f22280dae178
+# Source0-md5:	a2f269c9f9a943394043ac1de69eb5b0
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.bluez.org/
@@ -22,7 +22,7 @@ BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	dbus-devel >= 1.6
-BuildRequires:	ell-devel >= 0.3
+BuildRequires:	ell-devel >= 0.14
 BuildRequires:	glib2-devel >= 1:2.28
 BuildRequires:	json-c-devel
 BuildRequires:	libical-devel
@@ -36,6 +36,7 @@ BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus-libs >= 1.6
+Requires:	ell >= 0.14
 Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
 Requires:	rc-scripts
@@ -96,7 +97,7 @@ Znaki towarowe BLUETOOTH są własnością Bluetooth SIG, Inc. z USA.
 Summary:	Bluetooth backend for CUPS
 Summary(pl.UTF-8):	Backend Bluetooth dla CUPS-a
 Group:		Applications/Printing
-Requires:	bluez-libs >= %{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 Requires:	cups
 
 %description -n cups-backend-bluetooth
@@ -104,6 +105,20 @@ Bluetooth backend for CUPS.
 
 %description -n cups-backend-bluetooth -l pl.UTF-8
 Backend Bluetooth dla CUPS-a.
+
+%package -n zsh-completion-bluez
+Summary:	Zsh completion for bluez commands
+Summary(pl.UTF-8):	Dopełnianie parametrów w zsh dla poleceń z pakietu bluez
+Group:		Applications/Shells
+Requires:	%{name} = %{version}-%{release}
+Requires:	zsh
+
+%description -n zsh-completion-bluez
+Zsh completion for bluez commands (bluezctl utility).
+
+%description -n zsh-completion-bluez -l pl.UTF-8
+Dopełnianie parametrów w zsh dla poleceń z pakietu bluez (narzędzia
+bluezctl).
 
 %package libs
 Summary:	Bluetooth libraries
@@ -162,9 +177,10 @@ aplikacji Bluetooth.
 %{__automake}
 %configure \
 	--disable-silent-rules \
-	%{?with_deprecated:--enable-deprecated} \
 	--enable-btpclient \
+	%{?with_deprecated:--enable-deprecated} \
 	--enable-experimental \
+	--enable-external-ell \
 	--enable-health \
 	--enable-library \
 	--enable-mesh \
@@ -256,6 +272,7 @@ fi
 %if "%{_libexecdir}" != "%{_libdir}"
 %dir %{_libexecdir}/bluetooth
 %endif
+%attr(755,root,root) %{_libexecdir}/bluetooth/bluetooth-meshd
 %attr(755,root,root) %{_libexecdir}/bluetooth/bluetoothd
 %attr(755,root,root) %{_libexecdir}/bluetooth/obexd
 %dir %{_libdir}/bluetooth
@@ -269,10 +286,13 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/bluetooth
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/bluetooth
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth-mesh.conf
 %{systemdunitdir}/bluetooth.service
+%{systemdunitdir}/bluetooth-mesh.service
 %{systemduserunitdir}/obex.service
 %{_datadir}/dbus-1/services/org.bluez.obex.service
 %{_datadir}/dbus-1/system-services/org.bluez.service
+%{_datadir}/dbus-1/system-services/org.bluez.mesh.service
 %attr(755,root,root) %{udevdir}/hid2hci
 %{udevdir}/rules.d/97-hid2hci.rules
 %{_mandir}/man1/bccmd.1*
@@ -294,6 +314,10 @@ fi
 %files -n cups-backend-bluetooth
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_prefix}/lib/cups/backend/bluetooth
+
+%files -n zsh-completion-bluez
+%defattr(644,root,root,755)
+%{zsh_compdir}/_bluetoothctl
 
 %files libs
 %defattr(644,root,root,755)
