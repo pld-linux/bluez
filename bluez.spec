@@ -8,12 +8,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.51
-Release:	2
+Version:	5.52
+Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	a2f269c9f9a943394043ac1de69eb5b0
+# Source0-md5:	a33eb9aadf1dd4153420958709d3ce60
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.bluez.org/
@@ -22,7 +22,7 @@ BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	dbus-devel >= 1.6
-BuildRequires:	ell-devel >= 0.14
+BuildRequires:	ell-devel >= 0.26
 BuildRequires:	glib2-devel >= 1:2.28
 BuildRequires:	json-c-devel
 BuildRequires:	libical-devel
@@ -36,7 +36,7 @@ BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus-libs >= 1.6
-Requires:	ell >= 0.14
+Requires:	ell >= 0.26
 Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
 Requires:	rc-scripts
@@ -168,6 +168,9 @@ aplikacji Bluetooth.
 
 %prep
 %setup -q
+
+# external ell is broken if ell/ell.h is in place due to deps generation and Makefile.am rules
+%{__rm} -r ell
 
 %build
 %{__libtoolize}
