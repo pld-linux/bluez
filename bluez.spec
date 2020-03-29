@@ -8,12 +8,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.52
+Version:	5.54
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	a33eb9aadf1dd4153420958709d3ce60
+# Source0-md5:	e637feb2dbb7582bbbff1708367a847c
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.bluez.org/
@@ -22,9 +22,9 @@ BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	dbus-devel >= 1.6
-BuildRequires:	ell-devel >= 0.26
+BuildRequires:	ell-devel >= 0.28
 BuildRequires:	glib2-devel >= 1:2.28
-BuildRequires:	json-c-devel
+BuildRequires:	json-c-devel >= 0.13
 BuildRequires:	libical-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig >= 1:0.9.0
@@ -36,9 +36,10 @@ BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus-libs >= 1.6
-Requires:	ell >= 0.26
+Requires:	ell >= 0.28
 Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
+Requires:	json-c >= 0.13
 Requires:	rc-scripts
 Requires:	systemd-units >= 38
 Requires:	udev >= 1:172
@@ -260,6 +261,7 @@ fi
 %attr(755,root,root) %{_bindir}/hex2hcd
 %attr(755,root,root) %{_bindir}/l2ping
 %attr(755,root,root) %{_bindir}/l2test
+%attr(755,root,root) %{_bindir}/mesh-cfgclient
 %attr(755,root,root) %{_bindir}/meshctl
 %attr(755,root,root) %{_bindir}/mpris-proxy
 %attr(755,root,root) %{_bindir}/rctest
