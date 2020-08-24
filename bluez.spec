@@ -9,18 +9,25 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	5.54
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
 # Source0-md5:	e637feb2dbb7582bbbff1708367a847c
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
+# Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
+# as found on some Atom based x86 hardware
+Source3:	69-btattach-bcm.rules
+Source4:	btattach-bcm@.service
+Source5:	btattach-bcm-service.sh
+Patch0:		0001-obex-Use-GLib-helper-function-to-manipulate-paths.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	check-devel >= 0.9.6
+BuildRequires:	cups-devel
 BuildRequires:	dbus-devel >= 1.6
 BuildRequires:	ell-devel >= 0.28
 BuildRequires:	glib2-devel >= 1:2.28
@@ -30,6 +37,7 @@ BuildRequires:	libtool
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
 BuildRequires:	rpmbuild(macros) >= 1.682
+BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	udev-devel >= 1:172
 BuildRequires:	xz
@@ -169,6 +177,7 @@ aplikacji Bluetooth.
 
 %prep
 %setup -q
+%patch0 -p1
 
 # external ell is broken if ell/ell.h is in place due to deps generation and Makefile.am rules
 %{__rm} -r ell
@@ -187,6 +196,9 @@ aplikacji Bluetooth.
 	--enable-external-ell \
 	--enable-health \
 	--enable-library \
+	--enable-tools \
+	--enable-cups \
+	--enable-testing \
 	--enable-mesh \
 	--enable-midi \
 	--enable-nfc \
@@ -212,15 +224,22 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
 	rulesdir=%{udevdir}/rules.d \
 	udevdir=%{udevdir}
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{la,a}
-
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/bluetooth
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
 
 install profiles/input/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 install profiles/network/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 
+#serial port connected Broadcom HCIs scripts
+install %{SOURCE3} $RPM_BUILD_ROOT/%{udevdir}/rules.d/
+install %{SOURCE4} $RPM_BUILD_ROOT/%{systemdunitdir}/
+install %{SOURCE5} $RPM_BUILD_ROOT/%{_libexecdir}/bluetooth/
+
+# Install the HCI emulator, useful for testing
+install emulator/btvirt ${RPM_BUILD_ROOT}/%{_libexecdir}/bluetooth/
+
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libbluetooth.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{la,a}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -279,6 +298,8 @@ fi
 %endif
 %attr(755,root,root) %{_libexecdir}/bluetooth/bluetooth-meshd
 %attr(755,root,root) %{_libexecdir}/bluetooth/bluetoothd
+%attr(755,root,root) %{_libexecdir}/bluetooth/btattach-bcm-service.sh
+%attr(755,root,root) %{_libexecdir}/bluetooth/btvirt
 %attr(755,root,root) %{_libexecdir}/bluetooth/obexd
 %dir %{_libdir}/bluetooth
 %dir %{_libdir}/bluetooth/plugins
@@ -294,11 +315,13 @@ fi
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth-mesh.conf
 %{systemdunitdir}/bluetooth.service
 %{systemdunitdir}/bluetooth-mesh.service
+%{systemdunitdir}/btattach-bcm@.service
 %{systemduserunitdir}/obex.service
 %{_datadir}/dbus-1/services/org.bluez.obex.service
 %{_datadir}/dbus-1/system-services/org.bluez.service
 %{_datadir}/dbus-1/system-services/org.bluez.mesh.service
 %attr(755,root,root) %{udevdir}/hid2hci
+%{udevdir}/rules.d/69-btattach-bcm.rules
 %{udevdir}/rules.d/97-hid2hci.rules
 %{_mandir}/man1/bccmd.1*
 %{_mandir}/man1/btattach.1*
