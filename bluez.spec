@@ -8,12 +8,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.54
-Release:	3
+Version:	5.55
+Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	e637feb2dbb7582bbbff1708367a847c
+# Source0-md5:	94972b8bc7ade60c72b0ffa6ccff2c0a
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -195,6 +195,7 @@ aplikacji Bluetooth.
 	--enable-experimental \
 	--enable-external-ell \
 	--enable-health \
+	--enable-hid2hci \
 	--enable-library \
 	--enable-tools \
 	--enable-cups \
@@ -205,13 +206,12 @@ aplikacji Bluetooth.
 	--enable-sap \
 	--enable-sixaxis \
 	--enable-static \
+	--with-udevdir=%{udevdir} \
 	--with-systemdsystemunitdir=%{systemdunitdir} \
 	--with-systemduserunitdir=%{systemduserunitdir}
 
 %{__make} \
-	cupsdir=%{cupsdir} \
-	rulesdir=%{udevdir}/rules.d \
-	udevdir=%{udevdir}
+	cupsdir=%{cupsdir}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -231,12 +231,12 @@ install profiles/input/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 install profiles/network/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 
 #serial port connected Broadcom HCIs scripts
-install %{SOURCE3} $RPM_BUILD_ROOT/%{udevdir}/rules.d/
-install %{SOURCE4} $RPM_BUILD_ROOT/%{systemdunitdir}/
-install %{SOURCE5} $RPM_BUILD_ROOT/%{_libexecdir}/bluetooth/
+install %{SOURCE3} $RPM_BUILD_ROOT%{udevdir}/rules.d
+install %{SOURCE4} $RPM_BUILD_ROOT%{systemdunitdir}
+install %{SOURCE5} $RPM_BUILD_ROOT%{_libexecdir}/bluetooth
 
 # Install the HCI emulator, useful for testing
-install emulator/btvirt ${RPM_BUILD_ROOT}/%{_libexecdir}/bluetooth/
+install emulator/btvirt $RPM_BUILD_ROOT%{_libexecdir}/bluetooth
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libbluetooth.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{la,a}
