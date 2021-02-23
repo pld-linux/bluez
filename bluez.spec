@@ -8,12 +8,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.55
+Version:	5.56
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	94972b8bc7ade60c72b0ffa6ccff2c0a
+# Source0-md5:	e6c51b2aefa7c56ff072819a78611fa5
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -29,7 +29,7 @@ BuildRequires:	automake
 BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	cups-devel
 BuildRequires:	dbus-devel >= 1.6
-BuildRequires:	ell-devel >= 0.28
+BuildRequires:	ell-devel >= 0.37
 BuildRequires:	glib2-devel >= 1:2.28
 BuildRequires:	json-c-devel >= 0.13
 BuildRequires:	libical-devel
@@ -44,7 +44,7 @@ BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus-libs >= 1.6
-Requires:	ell >= 0.28
+Requires:	ell >= 0.37
 Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
 Requires:	json-c >= 0.13
@@ -272,7 +272,6 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
-%attr(755,root,root) %{_bindir}/bccmd
 %attr(755,root,root) %{_bindir}/bluemoon
 %attr(755,root,root) %{_bindir}/bluetoothctl
 %attr(755,root,root) %{_bindir}/btattach
@@ -323,7 +322,6 @@ fi
 %attr(755,root,root) %{udevdir}/hid2hci
 %{udevdir}/rules.d/69-btattach-bcm.rules
 %{udevdir}/rules.d/97-hid2hci.rules
-%{_mandir}/man1/bccmd.1*
 %{_mandir}/man1/btattach.1*
 %{_mandir}/man1/hid2hci.1*
 %{_mandir}/man1/l2ping.1*
