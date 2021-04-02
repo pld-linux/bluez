@@ -8,12 +8,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.56
+Version:	5.57
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	e6c51b2aefa7c56ff072819a78611fa5
+# Source0-md5:	c49e0f1c31f370385d2b0e582d468e2a
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -29,7 +29,7 @@ BuildRequires:	automake
 BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	cups-devel
 BuildRequires:	dbus-devel >= 1.6
-BuildRequires:	ell-devel >= 0.37
+BuildRequires:	ell-devel >= 0.39
 BuildRequires:	glib2-devel >= 1:2.28
 BuildRequires:	json-c-devel >= 0.13
 BuildRequires:	libical-devel
@@ -44,7 +44,7 @@ BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus-libs >= 1.6
-Requires:	ell >= 0.37
+Requires:	ell >= 0.39
 Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
 Requires:	json-c >= 0.13
