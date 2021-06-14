@@ -8,12 +8,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.58
+Version:	5.59
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	6737ba92a93432dbbd430bd41d7160c9
+# Source0-md5:	8ba89fa8caa8274a6f9056c494596d0c
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -280,6 +280,7 @@ fi
 %attr(755,root,root) %{_bindir}/l2ping
 %attr(755,root,root) %{_bindir}/l2test
 %attr(755,root,root) %{_bindir}/mesh-cfgclient
+%attr(755,root,root) %{_bindir}/mesh-cfgtest
 %attr(755,root,root) %{_bindir}/meshctl
 %attr(755,root,root) %{_bindir}/mpris-proxy
 %attr(755,root,root) %{_bindir}/rctest
@@ -323,6 +324,7 @@ fi
 %{udevdir}/rules.d/69-btattach-bcm.rules
 %{udevdir}/rules.d/97-hid2hci.rules
 %{_mandir}/man1/btattach.1*
+%{_mandir}/man1/btmon.1*
 %{_mandir}/man1/hid2hci.1*
 %{_mandir}/man1/l2ping.1*
 %{_mandir}/man1/rctest.1*
@@ -335,6 +337,7 @@ fi
 %{_mandir}/man1/rfcomm.1*
 %{_mandir}/man1/sdptool.1*
 %endif
+%{_mandir}/man8/bluetooth-meshd.8*
 %{_mandir}/man8/bluetoothd.8*
 
 %files -n cups-backend-bluetooth
