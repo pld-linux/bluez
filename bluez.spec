@@ -29,6 +29,7 @@ BuildRequires:	automake
 BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	cups-devel
 BuildRequires:	dbus-devel >= 1.6
+BuildRequires:	docutils
 BuildRequires:	ell-devel >= 0.39
 BuildRequires:	glib2-devel >= 1:2.28
 BuildRequires:	json-c-devel >= 0.13
