@@ -9,7 +9,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	5.61
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
@@ -22,6 +22,7 @@ Source3:	69-btattach-bcm.rules
 Source4:	btattach-bcm@.service
 Source5:	btattach-bcm-service.sh
 Patch0:		0001-obex-Use-GLib-helper-function-to-manipulate-paths.patch
+Patch1:		glibc2.34.patch
 URL:		http://www.bluez.org/
 BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	autoconf >= 2.60
@@ -179,6 +180,7 @@ aplikacji Bluetooth.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 # external ell is broken if ell/ell.h is in place due to deps generation and Makefile.am rules
 %{__rm} -r ell
