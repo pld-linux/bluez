@@ -42,7 +42,7 @@ BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	udev-devel >= 1:172
 BuildRequires:	xz
-Requires(post,preun,postun):	systemd-units >= 250.1
+Requires(post,preun,postun):	systemd-units >= 1:250.1
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus-libs >= 1.6
 Requires:	ell >= 0.39
@@ -50,7 +50,7 @@ Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
 Requires:	json-c >= 0.13
 Requires:	rc-scripts
-Requires:	systemd-units >= 250.1
+Requires:	systemd-units >= 1:250.1
 Requires:	udev >= 1:172
 Provides:	bluez-hcidump = %{version}
 Provides:	bluez-utils = %{version}-%{release}
