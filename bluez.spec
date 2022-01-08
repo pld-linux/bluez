@@ -9,7 +9,7 @@ Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
 Version:	5.63
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
@@ -37,12 +37,12 @@ BuildRequires:	libical-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
-BuildRequires:	rpmbuild(macros) >= 1.682
+BuildRequires:	rpmbuild(macros) >= 2.011
 BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	udev-devel >= 1:172
 BuildRequires:	xz
-Requires(post,preun,postun):	systemd-units >= 38
+Requires(post,preun,postun):	systemd-units >= 250.1
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus-libs >= 1.6
 Requires:	ell >= 0.39
@@ -50,7 +50,7 @@ Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
 Requires:	json-c >= 0.13
 Requires:	rc-scripts
-Requires:	systemd-units >= 38
+Requires:	systemd-units >= 250.1
 Requires:	udev >= 1:172
 Provides:	bluez-hcidump = %{version}
 Provides:	bluez-utils = %{version}-%{release}
@@ -249,6 +249,7 @@ rm -rf $RPM_BUILD_ROOT
 /sbin/chkconfig --add bluetooth
 %service bluetooth restart
 %systemd_post bluetooth.service
+%systemd_user_post obex.service
 
 %preun
 if [ "$1" = "0" ]; then
@@ -256,16 +257,16 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del bluetooth
 fi
 %systemd_preun bluetooth.service
+%systemd_user_preun obex.service
 
 %postun
 %systemd_reload
 
-%triggerpostun -- bluez < 4.98-3
-%systemd_trigger bluetooth.service
-
 %triggerpostun -- bluez < 5.13-1
 %service rfcomm stop
 /sbin/chkconfig --del rfcomm
+# bluez < 4.98-3
+%systemd_trigger bluetooth.service
 
 %post   libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
