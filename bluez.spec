@@ -59,15 +59,15 @@ Provides:	dbus(org.openobex.client)
 Provides:	obex-data-server = %{version}
 # moved somewhere or dropped?
 #Obsoletes:	alsa-plugins-bluetooth
-Obsoletes:	bluez-hcidump
-Obsoletes:	bluez-hciemu
-Obsoletes:	bluez-pan
-Obsoletes:	bluez-sdp
-Obsoletes:	bluez-systemd
-Obsoletes:	bluez-utils
-Obsoletes:	bluez-utils-init
-Obsoletes:	obexd
-Obsoletes:	obex-data-server
+Obsoletes:	bluez-hcidump < 3
+Obsoletes:	bluez-hciemu < 2
+Obsoletes:	bluez-pan < 2
+Obsoletes:	bluez-sdp < 2
+Obsoletes:	bluez-systemd < 4.98-3
+Obsoletes:	bluez-utils < 4
+Obsoletes:	bluez-utils-init < 4
+Obsoletes:	obexd < 1
+Obsoletes:	obex-data-server < 1
 # moved somewhere or dropped?
 #Obsoletes:	gstreamer-bluetooth < 4.101-3
 #Obsoletes:	gstreamer0.10-bluetooth < 5
@@ -134,7 +134,7 @@ bluezctl).
 Summary:	Bluetooth libraries
 Summary(pl.UTF-8):	Biblioteki Bluetooth
 Group:		Libraries
-Obsoletes:	bluez-sdp
+Obsoletes:	bluez-sdp < 2
 
 %description libs
 Libraries for use in Bluetooth applications.
@@ -151,7 +151,7 @@ Summary:	Header files for Bluetooth applications
 Summary(pl.UTF-8):	Pliki nagłówkowe dla aplikacji Bluetooth
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Obsoletes:	bluez-sdp-devel
+Obsoletes:	bluez-sdp-devel < 2
 
 %description libs-devel
 bluez-libs-devel contains header files for use in Bluetooth
@@ -166,7 +166,7 @@ Summary:	Static Bluetooth libraries
 Summary(pl.UTF-8):	Biblioteki statyczne Bluetooth
 Group:		Development/Libraries
 Requires:	%{name}-libs-devel = %{version}-%{release}
-Obsoletes:	bluez-sdp-static
+Obsoletes:	bluez-sdp-static < 2
 
 %description libs-static
 bluez-libs-static contains development static libraries for use in
