@@ -8,12 +8,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.64
+Version:	5.65
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	d89a1c660eaf33ae360af93e3e2951bd
+# Source0-md5:	bc07c802e95d4ee29d99f4f82c5abcf6
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -279,6 +279,7 @@ fi
 %attr(755,root,root) %{_bindir}/btattach
 %attr(755,root,root) %{_bindir}/btmon
 %attr(755,root,root) %{_bindir}/hex2hcd
+%attr(755,root,root) %{_bindir}/isotest
 %attr(755,root,root) %{_bindir}/l2ping
 %attr(755,root,root) %{_bindir}/l2test
 %attr(755,root,root) %{_bindir}/mesh-cfgclient
@@ -328,6 +329,7 @@ fi
 %{_mandir}/man1/btattach.1*
 %{_mandir}/man1/btmon.1*
 %{_mandir}/man1/hid2hci.1*
+%{_mandir}/man1/isotest.1*
 %{_mandir}/man1/l2ping.1*
 %{_mandir}/man1/rctest.1*
 %if %{with deprecated}
