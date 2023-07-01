@@ -37,6 +37,7 @@ BuildRequires:	libical-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.011
 BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
@@ -122,6 +123,7 @@ Summary(pl.UTF-8):	Dopełnianie parametrów w zsh dla poleceń z pakietu bluez
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
 Requires:	zsh
+BuildArch:	noarch
 
 %description -n zsh-completion-bluez
 Zsh completion for bluez commands (bluezctl utility).
