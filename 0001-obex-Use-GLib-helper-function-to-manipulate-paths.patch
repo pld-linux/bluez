@@ -13,11 +13,10 @@ diff --git a/obexd/src/manager.c b/obexd/src/manager.c
 index f84384ae4..285c07c37 100644
 --- a/obexd/src/manager.c
 +++ b/obexd/src/manager.c
-@@ -650,14 +650,14 @@ static void agent_reply(DBusPendingCall *call, void *user_data)
- 				DBUS_TYPE_STRING, &name,
+@@ -645,16 +645,19 @@
  				DBUS_TYPE_INVALID)) {
  		/* Splits folder and name */
--		const char *slash = strrchr(name, '/');
+ 		const char *slash = strrchr(name, '/');
 +		gboolean is_relative = !g_path_is_absolute(name);
  		DBG("Agent replied with %s", name);
 -		if (!slash) {
@@ -26,13 +25,17 @@ index f84384ae4..285c07c37 100644
 +			agent->new_name = g_path_get_basename(name);
  			agent->new_folder = NULL;
  		} else {
--			agent->new_name = g_strdup(slash + 1);
+-			if (strlen(slash) == 1)
++			if (slash && strlen(slash) == 1) {
+ 				agent->new_name = NULL;
+-			else
+-				agent->new_name = g_strdup(slash + 1);
 -			agent->new_folder = g_strndup(name, slash - name);
-+			agent->new_name = g_path_get_basename(name);
-+			agent->new_folder = g_path_get_dirname(name);
++				agent->new_folder = g_strndup(name, slash - name);
++			} else {
++				agent->new_name = g_path_get_basename(name);
++				agent->new_folder = g_path_get_dirname(name);
++			}
  		}
  	}
  
--- 
-2.14.1
-
