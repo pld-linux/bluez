@@ -4,6 +4,7 @@
 #
 # Conditional build:
 %bcond_without	deprecated	# deprecated tools (ciptool,hciattach,hciconfig,hcidump,hcitool,rfcomm,sdptool)
+%bcond_without	systemd		# systemd
 #
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
@@ -39,7 +40,7 @@ BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.011
-BuildRequires:	systemd-devel
+%{?with_systemd:BuildRequires:	systemd-devel}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	udev-devel >= 1:172
 BuildRequires:	xz
@@ -210,8 +211,9 @@ aplikacji Bluetooth.
 	--enable-sixaxis \
 	--enable-static \
 	--with-udevdir=%{udevdir} \
-	--with-systemdsystemunitdir=%{systemdunitdir} \
-	--with-systemduserunitdir=%{systemduserunitdir}
+	%{?with_systemd:--with-systemdsystemunitdir=%{systemdunitdir}} \
+	%{?with_systemd:--with-systemduserunitdir=%{systemduserunitdir}} \
+	%{!?with_systemd:--disable-systemd}
 
 %{__make} \
 	cupsdir=%{cupsdir}
@@ -235,7 +237,7 @@ install profiles/network/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
 
 #serial port connected Broadcom HCIs scripts
 install %{SOURCE3} $RPM_BUILD_ROOT%{udevdir}/rules.d
-install %{SOURCE4} $RPM_BUILD_ROOT%{systemdunitdir}
+%{?with_systemd:install %{SOURCE4} $RPM_BUILD_ROOT%{systemdunitdir}}
 install %{SOURCE5} $RPM_BUILD_ROOT%{_libexecdir}/bluetooth
 
 # Install the HCI emulator, useful for testing
@@ -318,6 +320,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/bluetooth
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth-mesh.conf
+%if %{with systemd}
 %{systemdunitdir}/bluetooth.service
 %{systemdunitdir}/bluetooth-mesh.service
 %{systemdunitdir}/btattach-bcm@.service
@@ -325,6 +328,7 @@ fi
 %{_datadir}/dbus-1/services/org.bluez.obex.service
 %{_datadir}/dbus-1/system-services/org.bluez.service
 %{_datadir}/dbus-1/system-services/org.bluez.mesh.service
+%endif
 %attr(755,root,root) %{udevdir}/hid2hci
 %{udevdir}/rules.d/69-btattach-bcm.rules
 %{udevdir}/rules.d/97-hid2hci.rules
