@@ -9,12 +9,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.68
+Version:	5.69
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	00a72fed12e706b2d8bb40786154d3aa
+# Source0-md5:	a05a6c133d3bf6dc1d1c6c46a9704312
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -29,7 +29,7 @@ BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	cups-devel
-BuildRequires:	dbus-devel >= 1.6
+BuildRequires:	dbus-devel >= 1.10
 BuildRequires:	docutils
 BuildRequires:	ell-devel >= 0.39
 BuildRequires:	glib2-devel >= 1:2.28
@@ -46,7 +46,7 @@ BuildRequires:	udev-devel >= 1:172
 BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 1:250.1
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	dbus-libs >= 1.6
+Requires:	dbus-libs >= 1.10
 Requires:	ell >= 0.39
 Requires:	glib2 >= 1:2.28
 Requires:	hwdata >= 0.225
@@ -318,8 +318,6 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/network.conf
 %attr(754,root,root) /etc/rc.d/init.d/bluetooth
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/bluetooth
-%config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth.conf
-%config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/bluetooth-mesh.conf
 %if %{with systemd}
 %{systemdunitdir}/bluetooth.service
 %{systemdunitdir}/bluetooth-mesh.service
@@ -328,11 +326,16 @@ fi
 %{_datadir}/dbus-1/services/org.bluez.obex.service
 %{_datadir}/dbus-1/system-services/org.bluez.service
 %{_datadir}/dbus-1/system-services/org.bluez.mesh.service
+%{_datadir}/dbus-1/system.d/bluetooth.conf
+%{_datadir}/dbus-1/system.d/bluetooth-mesh.conf
 %endif
 %attr(755,root,root) %{udevdir}/hid2hci
 %{udevdir}/rules.d/69-btattach-bcm.rules
 %{udevdir}/rules.d/97-hid2hci.rules
+%{_mandir}/man1/bluetoothctl-mgmt.1*
+%{_mandir}/man1/bluetoothctl-monitor.1*
 %{_mandir}/man1/btattach.1*
+%{_mandir}/man1/btmgmt.1*
 %{_mandir}/man1/btmon.1*
 %{_mandir}/man1/hid2hci.1*
 %{_mandir}/man1/isotest.1*
