@@ -9,12 +9,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.70
+Version:	5.71
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	b9379acf0ea6e7f37ac09720918b5aa7
+# Source0-md5:	00a0dcb5b106f5dc85859a14ef62b85d
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -332,8 +332,15 @@ fi
 %attr(755,root,root) %{udevdir}/hid2hci
 %{udevdir}/rules.d/69-btattach-bcm.rules
 %{udevdir}/rules.d/97-hid2hci.rules
+%{_mandir}/man1/bluetoothctl-admin.1*
+%{_mandir}/man1/bluetoothctl-advertise.1*
+%{_mandir}/man1/bluetoothctl-endpoint.1*
+%{_mandir}/man1/bluetoothctl-gatt.1*
 %{_mandir}/man1/bluetoothctl-mgmt.1*
 %{_mandir}/man1/bluetoothctl-monitor.1*
+%{_mandir}/man1/bluetoothctl-player.1*
+%{_mandir}/man1/bluetoothctl-scan.1*
+%{_mandir}/man1/bluetoothctl-transport.1*
 %{_mandir}/man1/btattach.1*
 %{_mandir}/man1/btmgmt.1*
 %{_mandir}/man1/btmon.1*
@@ -350,6 +357,7 @@ fi
 %{_mandir}/man1/rfcomm.1*
 %{_mandir}/man1/sdptool.1*
 %endif
+%{_mandir}/man5/org.bluez.*.5*
 %{_mandir}/man8/bluetooth-meshd.8*
 %{_mandir}/man8/bluetoothd.8*
 
