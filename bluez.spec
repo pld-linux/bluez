@@ -4,6 +4,7 @@
 #
 # Conditional build:
 %bcond_without	deprecated	# deprecated tools (ciptool,hciattach,hciconfig,hcidump,hcitool,rfcomm,sdptool)
+%bcond_without	static_libs	# static library
 %bcond_without	systemd		# systemd
 #
 Summary:	Bluetooth utilities
@@ -209,7 +210,7 @@ aplikacji Bluetooth.
 	--enable-nfc \
 	--enable-sap \
 	--enable-sixaxis \
-	--enable-static \
+	%{__enable_disable static_libs static} \
 	--with-udevdir=%{udevdir} \
 	%{?with_systemd:--with-systemdsystemunitdir=%{systemdunitdir}} \
 	%{?with_systemd:--with-systemduserunitdir=%{systemduserunitdir}} \
@@ -244,7 +245,8 @@ install %{SOURCE5} $RPM_BUILD_ROOT%{_libexecdir}/bluetooth
 install emulator/btvirt $RPM_BUILD_ROOT%{_libexecdir}/bluetooth
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libbluetooth.la
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.{la,a}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.la
+%{?with_static_libs:%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.a}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -380,6 +382,8 @@ fi
 %{_includedir}/bluetooth
 %{_pkgconfigdir}/bluez.pc
 
+%if %{with static_libs}
 %files libs-static
 %defattr(644,root,root,755)
 %{_libdir}/libbluetooth.a
+%endif
