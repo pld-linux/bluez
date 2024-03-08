@@ -10,12 +10,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.72
+Version:	5.73
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	fcacd4d6d65f7da141977a2beb1ba78f
+# Source0-md5:	7812034c8b91bf11e4f1379734756a3b
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -43,7 +43,7 @@ BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 2.011
 %{?with_systemd:BuildRequires:	systemd-devel}
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	udev-devel >= 1:172
+BuildRequires:	udev-devel >= 1:196
 BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 1:250.1
 Requires:	%{name}-libs = %{version}-%{release}
@@ -54,7 +54,7 @@ Requires:	hwdata >= 0.225
 Requires:	json-c >= 0.13
 Requires:	rc-scripts
 Requires:	systemd-units >= 1:250.1
-Requires:	udev >= 1:172
+Requires:	udev >= 1:196
 Provides:	bluez-hcidump = %{version}
 Provides:	bluez-utils = %{version}-%{release}
 Provides:	obexd = %{version}
@@ -199,6 +199,7 @@ aplikacji Bluetooth.
 	%{?with_deprecated:--enable-deprecated} \
 	--enable-experimental \
 	--enable-external-ell \
+	--enable-external-plugins \
 	--enable-health \
 	--enable-hid2hci \
 	--enable-library \
@@ -233,9 +234,6 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/bluetooth
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/bluetooth
 
-install profiles/input/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
-install profiles/network/*.conf $RPM_BUILD_ROOT%{_sysconfdir}/bluetooth
-
 #serial port connected Broadcom HCIs scripts
 install %{SOURCE3} $RPM_BUILD_ROOT%{udevdir}/rules.d
 %{?with_systemd:install %{SOURCE4} $RPM_BUILD_ROOT%{systemdunitdir}}
@@ -245,8 +243,6 @@ install %{SOURCE5} $RPM_BUILD_ROOT%{_libexecdir}/bluetooth
 install emulator/btvirt $RPM_BUILD_ROOT%{_libexecdir}/bluetooth
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libbluetooth.la
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.la
-%{?with_static_libs:%{__rm} $RPM_BUILD_ROOT%{_libdir}/bluetooth/plugins/*.a}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -312,11 +308,12 @@ fi
 %attr(755,root,root) %{_libexecdir}/bluetooth/obexd
 %dir %{_libdir}/bluetooth
 %dir %{_libdir}/bluetooth/plugins
-%attr(755,root,root) %{_libdir}/bluetooth/plugins/sixaxis.so
 %dir %{_libdir}/obex
 %dir %{_libdir}/obex/plugins
 %dir %{_sysconfdir}/bluetooth
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/input.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/main.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/mesh-main.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/bluetooth/network.conf
 %attr(754,root,root) /etc/rc.d/init.d/bluetooth
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/bluetooth
@@ -324,6 +321,7 @@ fi
 %{systemdunitdir}/bluetooth.service
 %{systemdunitdir}/bluetooth-mesh.service
 %{systemdunitdir}/btattach-bcm@.service
+%{systemduserunitdir}/dbus-org.bluez.obex.service
 %{systemduserunitdir}/obex.service
 %{_datadir}/dbus-1/services/org.bluez.obex.service
 %{_datadir}/dbus-1/system-services/org.bluez.service
