@@ -10,12 +10,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.77
+Version:	5.78
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	02878560e89165540c4a0b8c060d1092
+# Source0-md5:	baba09f84a22be1e1b6a0d9b94530788
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -334,6 +334,7 @@ fi
 %{udevdir}/rules.d/97-hid2hci.rules
 %{_mandir}/man1/bluetoothctl.1*
 %{_mandir}/man1/bluetoothctl-admin.1*
+%{_mandir}/man1/bluetoothctl-assistant.1*
 %{_mandir}/man1/bluetoothctl-advertise.1*
 %{_mandir}/man1/bluetoothctl-endpoint.1*
 %{_mandir}/man1/bluetoothctl-gatt.1*
