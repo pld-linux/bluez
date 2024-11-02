@@ -10,12 +10,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.78
+Version:	5.79
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	baba09f84a22be1e1b6a0d9b94530788
+# Source0-md5:	a22d25ca60e89d211ac154dca3a84e61
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -322,6 +322,7 @@ fi
 %{systemdunitdir}/bluetooth-mesh.service
 %{systemdunitdir}/btattach-bcm@.service
 %{systemduserunitdir}/dbus-org.bluez.obex.service
+%{systemduserunitdir}/mpris-proxy.service
 %{systemduserunitdir}/obex.service
 %{_datadir}/dbus-1/services/org.bluez.obex.service
 %{_datadir}/dbus-1/system-services/org.bluez.service
@@ -360,6 +361,7 @@ fi
 %{_mandir}/man1/sdptool.1*
 %endif
 %{_mandir}/man5/org.bluez.*.5*
+%{_mandir}/man7/hci.7*
 %{_mandir}/man7/l2cap.7*
 %{_mandir}/man7/rfcomm.7*
 %{_mandir}/man8/bluetooth-meshd.8*
