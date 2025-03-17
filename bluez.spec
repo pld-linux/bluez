@@ -6,16 +6,17 @@
 %bcond_without	deprecated	# deprecated tools (ciptool,hciattach,hciconfig,hcidump,hcitool,rfcomm,sdptool)
 %bcond_without	static_libs	# static library
 %bcond_without	systemd		# systemd
+%bcond_with	evolution	# evolution ebook plugin in obexd
 #
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.79
+Version:	5.80
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	a22d25ca60e89d211ac154dca3a84e61
+# Source0-md5:	9c408deafeccb400690e340d0abfe864
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -33,10 +34,11 @@ BuildRequires:	cups-devel
 BuildRequires:	dbus-devel >= 1.10
 BuildRequires:	docutils
 BuildRequires:	ell-devel >= 0.39
+%{?with_evolution:BuildRequires:	evolution-data-server-devel >= 3.3}
 BuildRequires:	glib2-devel >= 1:2.28
 BuildRequires:	json-c-devel >= 0.13
 BuildRequires:	libical-devel
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:2
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	readline-devel
 BuildRequires:	rpm-build >= 4.6
@@ -194,7 +196,6 @@ aplikacji Bluetooth.
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-silent-rules \
 	--enable-btpclient \
 	%{?with_deprecated:--enable-deprecated} \
 	--enable-experimental \
@@ -210,12 +211,14 @@ aplikacji Bluetooth.
 	--enable-midi \
 	--enable-nfc \
 	--enable-sap \
+	--disable-silent-rules \
 	--enable-sixaxis \
 	%{__enable_disable static_libs static} \
-	--with-udevdir=%{udevdir} \
+	%{!?with_systemd:--disable-systemd} \
+	%{?with_evolution:--with-phonebook=ebook} \
 	%{?with_systemd:--with-systemdsystemunitdir=%{systemdunitdir}} \
 	%{?with_systemd:--with-systemduserunitdir=%{systemduserunitdir}} \
-	%{!?with_systemd:--disable-systemd}
+	--with-udevdir=%{udevdir} \
 
 %{__make} \
 	cupsdir=%{cupsdir}
@@ -329,6 +332,7 @@ fi
 %{_datadir}/dbus-1/system-services/org.bluez.mesh.service
 %{_datadir}/dbus-1/system.d/bluetooth.conf
 %{_datadir}/dbus-1/system.d/bluetooth-mesh.conf
+%{_datadir}/dbus-1/system.d/obex.conf
 %endif
 %attr(755,root,root) %{udevdir}/hid2hci
 %{udevdir}/rules.d/69-btattach-bcm.rules
@@ -339,6 +343,7 @@ fi
 %{_mandir}/man1/bluetoothctl-advertise.1*
 %{_mandir}/man1/bluetoothctl-endpoint.1*
 %{_mandir}/man1/bluetoothctl-gatt.1*
+%{_mandir}/man1/bluetoothctl-hci.1*
 %{_mandir}/man1/bluetoothctl-mgmt.1*
 %{_mandir}/man1/bluetoothctl-monitor.1*
 %{_mandir}/man1/bluetoothctl-player.1*
