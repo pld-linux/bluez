@@ -182,7 +182,7 @@ aplikacji Bluetooth.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch -P0 -p1
 
 # external ell is broken if ell/ell.h is in place due to deps generation and Makefile.am rules
 %{__rm} -r ell
