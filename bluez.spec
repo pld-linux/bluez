@@ -11,12 +11,12 @@
 Summary:	Bluetooth utilities
 Summary(pl.UTF-8):	Narzędzia Bluetooth
 Name:		bluez
-Version:	5.82
+Version:	5.83
 Release:	1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	https://www.kernel.org/pub/linux/bluetooth/%{name}-%{version}.tar.xz
-# Source0-md5:	423d530b13ba8345523de553b1f1d7ed
+# Source0-md5:	59cf5b86dd008180503a159109bbfb9a
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 # Scripts for automatically btattach-ing serial ports connected to Broadcom HCIs
@@ -35,7 +35,7 @@ BuildRequires:	dbus-devel >= 1.10
 BuildRequires:	docutils
 BuildRequires:	ell-devel >= 0.39
 %{?with_evolution:BuildRequires:	evolution-data-server-devel >= 3.3}
-BuildRequires:	glib2-devel >= 1:2.28
+BuildRequires:	glib2-devel >= 1:2.36
 BuildRequires:	json-c-devel >= 0.13
 BuildRequires:	libical-devel
 BuildRequires:	libtool >= 2:2
@@ -51,7 +51,7 @@ Requires(post,preun,postun):	systemd-units >= 1:250.1
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus-libs >= 1.10
 Requires:	ell >= 0.39
-Requires:	glib2 >= 1:2.28
+Requires:	glib2 >= 1:2.36
 Requires:	hwdata >= 0.225
 Requires:	json-c >= 0.13
 Requires:	rc-scripts
@@ -368,6 +368,7 @@ fi
 %{_mandir}/man5/org.bluez.*.5*
 %{_mandir}/man7/hci.7*
 %{_mandir}/man7/l2cap.7*
+%{_mandir}/man7/mgmt.7*
 %{_mandir}/man7/rfcomm.7*
 %{_mandir}/man7/sco.7*
 %{_mandir}/man8/bluetooth-meshd.8*
